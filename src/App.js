@@ -11,9 +11,9 @@ import db from './dbConnection'
 
 function App() {
 
-    const [projects, setProjects] = useState([]);
+    const [projects, setProjects] = useState();
 
-    const  getProjects =  () => {
+    const  getProjects = () => {
         const projectColRef = query(collection(db, 'Project'));
         onSnapshot(projectColRef, (snapshot) => {
             setProjects(snapshot.docs.map(doc => ({
@@ -23,11 +23,9 @@ function App() {
         })
     }
 
-
     useEffect( () => {
         getProjects();
     }, [])
-
 
 
     return (

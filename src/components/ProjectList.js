@@ -7,7 +7,7 @@ const ProjectList = (props) => {
 
     return (
         <div className="dropdown-menu" >
-            {projects.map(project => <ProjectListItem
+            {projects?.map(project => <ProjectListItem
                 project={project}
                 key={project.id}
             />)}
