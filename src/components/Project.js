@@ -6,7 +6,7 @@ const Project = (props) => {
     const params = useParams();
     return (
         <div>
-            <h1>Project: {projects.length}</h1>
+            <h1>Project: {projects?.find(project => project.id === params.projectId)?.projectName}</h1>
         </div>
     );
 };

@@ -11,7 +11,7 @@ import db from './dbConnection'
 
 function App() {
 
-    const [projects, setProjects] = useState([]);
+    const [projects, setProjects] = useState(null);
 
     const  getProjects =  () => {
         const projectColRef = query(collection(db, 'Project'));
