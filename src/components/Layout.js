@@ -1,7 +1,11 @@
 import React from 'react';
 import {Link, Outlet} from "react-router-dom";
+import ProjectList from "./ProjectList";
 
-const Layout = () => {
+const Layout = (props) => {
+
+    const {projects} = props;
+
     return (
         <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -20,11 +24,9 @@ const Layout = () => {
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Projects
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a className="dropdown-item" href="/projects">Action</a>
-                            <a className="dropdown-item" href="#">Another action</a>
-                            <a className="dropdown-item" href="#">Something else here</a>
-                        </div>
+                        <ProjectList
+                            projects={projects}
+                        />
                     </li>
                     <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink"
