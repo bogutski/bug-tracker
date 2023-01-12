@@ -1,10 +1,11 @@
 import React from 'react';
-import {Link, Outlet} from "react-router-dom";
-import ProjectList from "./ProjectList";
+import {Outlet} from "react-router-dom";
+import ProjectList from "./projects/ProjectList";
+import BoardList from "./boards/BoardList";
 
 const Layout = (props) => {
 
-    const {projects} = props;
+    const {projects, boards} = props;
 
     return (
         <>
@@ -33,11 +34,7 @@ const Layout = (props) => {
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Boards
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a className="dropdown-item" href="/boards">Action</a>
-                            <a className="dropdown-item" href="#">Another action</a>
-                            <a className="dropdown-item" href="#">Something else here</a>
-                        </div>
+                            <BoardList boards={boards}/>
                     </li>
                 </ul>
             </div>
