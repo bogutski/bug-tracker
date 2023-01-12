@@ -8,7 +8,7 @@ const Board = (props) => {
   console.log(currentBoard)
     return (
         <div>
-            <h1>Board: </h1>
+            <h1>Board: {boards?.find(board => board.id === params.boardId)?.boardName}</h1>
         </div>
     );
 };
