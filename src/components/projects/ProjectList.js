@@ -1,5 +1,6 @@
 import React from 'react';
 import ProjectListItem from "./ProjectListItem";
+import CreateProject from "../CreateProject";
 
 const ProjectList = (props) => {
 
@@ -11,7 +12,10 @@ const ProjectList = (props) => {
                 project={project}
                 key={project.id}
             />)}
+            <div className="dropdown-divider"></div>
+            <CreateProject/>
         </div>
+
     );
 };
 

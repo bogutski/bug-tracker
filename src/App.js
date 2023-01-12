@@ -47,6 +47,7 @@ function App() {
                   <Route index element={<Dashboard/>}/>
                   <Route path='projects/:projectId' element={<Project
                     projects={projects}
+                    boards={boards}
                   />}/>
                   <Route path='boards/:boardId' element={<Board boards={boards}/>}/>
               </Route>
