@@ -1,9 +1,16 @@
 import React from 'react';
+import ProjectListItem from "./ProjectListItem";
 
-const ProjectList = () => {
+const ProjectList = (props) => {
+
+    const {projects} = props;
+
     return (
-        <div>
-            
+        <div className="dropdown-menu" >
+            {projects.map(project => <ProjectListItem
+                project={project}
+                key={project.id}
+            />)}
         </div>
     );
 };
