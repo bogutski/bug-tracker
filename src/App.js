@@ -2,8 +2,8 @@ import "./App.css";
 import {Route, Routes} from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./components/Dashboard";
-import Board from "./components/boards/Board";
-import Project from "./components/projects/Project";
+import Board from "./components/Board";
+import Project from "./components/Project";
 import {useEffect, useState} from "react";
 import {query, collection, onSnapshot} from 'firebase/firestore';
 import db from './dbConnection'
