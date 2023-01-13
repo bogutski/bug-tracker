@@ -1,24 +1,9 @@
-import React, {useState} from 'react';
-import ProjectModal from "./modals/ProjectModal";
+import React from 'react';
 
 const CreateProject = () => {
-
-    const [modal, setModal] = useState(false);
-
-    const toggle = () => setModal(!modal);
-
     return (
         <div>
-            <button
-                type="button"
-                className="btn btn-link"
-                onClick={toggle}
-            >Create Project</button>
-            <ProjectModal
-                modal={modal}
-                toggle={toggle}
-                title={"Create Project"}
-            />
+            <button type="button" className="btn btn-link">Create Project</button>
         </div>
     );
 };
