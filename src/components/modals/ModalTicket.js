@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ModalTask = () => {
+const ModalTicket = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const ModalTask = () => {
     );
 };
 
-export default ModalTask;
+export default ModalTicket;
