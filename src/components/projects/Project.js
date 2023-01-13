@@ -1,23 +1,48 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useParams} from "react-router-dom";
 import BoardList from "../boards/BoardList";
+import ProjectModal from "../modals/ProjectModal";
+
 
 const Project = (props) => {
     const {projects, boards} = props
+
     const params = useParams();
-    const projectId = params.projectId
-    console.log(boards)
+    const [modal, setModal] = useState(false);
+
+    const toggle = () => setModal(!modal);
+
+    const projectId = params.projectId;
+
+const projName = projects?.find(project => project.id === projectId)?.projectName
+
+
     return (
-        <div>
-            <h1>Project: {projects?.find(project => project.id === projectId)?.projectName}</h1>
-            <div className="dropdown">
-                <button className="btn btn-primary dropdown-toggle" href="" id="navbarDropdownMenuLink"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Boards
-                </button>
-                    <BoardList projectId={projectId} boards={boards}/>
+        <div >
+            <div className="d-flex flex-row m-3 justify-content-around">
+                {!modal && <div></div>}
+                {modal && <ProjectModal
+                    modal={modal}
+                    toggle={toggle}
+                    title={"Edit Project"}
+                    projname={projName}
+                    projectId={projectId}
+                />}
+                <h1 className="ms-5">
+                    Project: {projName}
+                </h1>
+
+                <button className="btn btn-outline-success m-0 btn-md" onClick={toggle}>Edit</button>
+
             </div>
 
+            <div className="dropdown">
+                <button className="btn btn-primary dropdown-toggle" href="" id="navbarDropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Boards
+                </button>
+                <BoardList projectId={projectId} boards={boards}/>
+            </div>
         </div>
     );
 };
