@@ -7,6 +7,7 @@ import Project from "./components/projects/Project";
 import {useEffect, useState} from "react";
 import {query, collection, onSnapshot} from 'firebase/firestore';
 import db from './dbConnection'
+import 'bootstrap/dist/css/bootstrap.css'
 
 function App() {
 
@@ -35,24 +36,22 @@ function App() {
         getBoards();
     }, [])
 
-    console.log(boards)
-    console.log(projects)
 
     return (<div className="App">
-          <Routes>
-              <Route path='/' element={<Layout
+        <Routes>
+            <Route path='/' element={<Layout
                 projects={projects}
                 boards={boards}
-              />}>
-                  <Route index element={<Dashboard/>}/>
-                  <Route path='projects/:projectId' element={<Project
+            />}>
+                <Route index element={<Dashboard/>}/>
+                <Route path='projects/:projectId' element={<Project
                     projects={projects}
                     boards={boards}
-                  />}/>
-                  <Route path='boards/:boardId' element={<Board boards={boards}/>}/>
-              </Route>
-          </Routes>
-      </div>);
+                />}/>
+                <Route path='boards/:boardId' element={<Board boards={boards}/>}/>
+            </Route>
+        </Routes>
+    </div>);
 }
 
 export default App;
