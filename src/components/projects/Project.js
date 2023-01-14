@@ -47,12 +47,14 @@ const Project = (props) => {
                 </button>
                 <BoardList projectId={projectId} boards={boards}/>
             </div>
+            <div className="input-group-btn position-fixed fixed-bottom d-flex justify-content-end me-5">
                 <button
-                    className="input-group-btn position-fixed fixed-bottom m-5 bg-danger w-25 text-light rounded-5"
+                    className=" btn btn-danger text-light rounded-2 mb-3"
                     onClick={deleteToggle}
                 >
                     Delete
                 </button>
+            </div>
             {deleteModal === true && <DeleteModal
                 modal={deleteModal}
                 toggle={deleteToggle}
