@@ -2,15 +2,12 @@ import React, {useState} from 'react';
 import {useParams} from "react-router-dom";
 import BoardModal from "../modals/BoardModal";
 import BoardList from "./BoardList";
-// import {doc, updateDoc} from "firebase/firestore";
+
 
 const Board = (props) => {
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-
-    // const [boardName, setBoardName] = useState('');
-
 
     const {boards} = props
 
@@ -19,12 +16,6 @@ const Board = (props) => {
 
     const currentBoard = boards.filter(board => board.id === params.boardId)[0]
 
-    // const updateBoards = (e) => {
-    //     e.preventDefault();
-    //     updateDoc(doc(db, 'Board', boardId), {boardName})
-    //         .then(r => console.log(r))
-    //         .catch(err => console.log(err));
-    // };
 
     return (
         <div>

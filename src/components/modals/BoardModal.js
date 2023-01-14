@@ -1,25 +1,10 @@
 import React, {useState} from 'react';
 import {Button, Input, InputGroup, InputGroupText, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
-// import {addDoc, collection, doc, updateDoc} from "firebase/firestore";
-// import db from "../../dbConnection";
 
 const BoardModal = (props) => {
 
     const {modal, toggle} = props;
     const [boardName, setBoardName] = useState('');
-
-    // const createNewBoard = (e) => {
-    //     e.preventDefault();
-    //     addDoc(collection(db, 'Board'), {
-    //         boardName
-    //     })
-    //         .then(r => console.log(r))
-    //         .catch(err => console.log(err));
-    //     setBoardName('');
-    // };
-
-
-
 
 
     return (

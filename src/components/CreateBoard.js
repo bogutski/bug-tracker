@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import BoardModal from "./modals/BoardModal";
 
-
 function CreateBoard() {
 
     const [modal, setModal] = useState(false);
 
     const toggle = () => setModal(!modal);
-
 
     return (
         <div>
