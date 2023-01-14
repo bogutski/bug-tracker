@@ -46,7 +46,7 @@ const Board = (props) => {
                     aria-expanded="false">
                 Boards
             </button>
-            <BoardList boards={boards} boardId={boardId}/>
+            <BoardList  boardId={boardId}/>
         </div>
     );
 };
