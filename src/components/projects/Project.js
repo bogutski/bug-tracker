@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useParams} from "react-router-dom";
 import BoardList from "../boards/BoardList";
 import ProjectModal from "../modals/ProjectModal";
+import DeleteModal from "../modals/DeleteModal";
 
 
 const Project = (props) => {
@@ -9,16 +10,19 @@ const Project = (props) => {
 
     const params = useParams();
     const [modal, setModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false)
+
+    const deleteToggle = () => setDeleteModal(!deleteModal);
 
     const toggle = () => setModal(!modal);
 
     const projectId = params.projectId;
 
-const projName = projects?.find(project => project.id === projectId)?.projectName
+    const projName = projects?.find(project => project.id === projectId)?.projectName
 
 
     return (
-        <div >
+        <div>
             <div className="d-flex flex-row m-3 justify-content-around">
                 {!modal && <div></div>}
                 {modal && <ProjectModal
@@ -43,8 +47,23 @@ const projName = projects?.find(project => project.id === projectId)?.projectNam
                 </button>
                 <BoardList projectId={projectId} boards={boards}/>
             </div>
+            <div className="input-group-btn position-fixed fixed-bottom d-flex justify-content-end me-5">
+                <button
+                    className=" btn btn-danger text-light rounded-2 mb-3"
+                    onClick={deleteToggle}
+                >
+                    Delete
+                </button>
+            </div>
+            {deleteModal === true && <DeleteModal
+                modal={deleteModal}
+                toggle={deleteToggle}
+                title={projName}
+                projectid={projectId}
+            />}
         </div>
-    );
+    )
+        ;
 };
 
 export default Project;
