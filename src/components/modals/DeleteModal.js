@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import React from 'react';
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import {deleteDoc, doc} from "firebase/firestore";
 import db from '../../dbConnection'
 
 function DeleteModal(props) {
-    const {modal, toggle, title, id} = props;
-
+    const {modal, toggle, title, projectid} = props;
+    console.log(projectid);
     const deleteProject = (id) => {
         deleteDoc(doc(db, 'Project', id))
             .then(() => console.log('The project has been deleted successfully'))
@@ -13,9 +13,9 @@ function DeleteModal(props) {
     }
 
     function onDelete() {
-        deleteProject(id);
+        deleteProject(projectid);
         toggle();
-        window.location = '/';
+        setTimeout(() => window.location = '/', 200)
     }
 
     return (

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import BoardList from "../boards/BoardList";
 import ProjectModal from "../modals/ProjectModal";
 import DeleteModal from "../modals/DeleteModal";
@@ -53,11 +53,11 @@ const Project = (props) => {
                 >
                     Delete
                 </button>
-            {deleteModal && <DeleteModal
+            {deleteModal === true && <DeleteModal
                 modal={deleteModal}
                 toggle={deleteToggle}
                 title={projName}
-                id={projectId}
+                projectid={projectId}
             />}
         </div>
     )
