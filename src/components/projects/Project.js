@@ -30,7 +30,7 @@ const Project = (props) => {
                     toggle={toggle}
                     title={"Edit Project"}
                     projname={projName}
-                    projectId={projects?.projectId}
+                    projectId={projectId}
                 />}
                 <h1 className="ms-5">
                     Project: {projName}
