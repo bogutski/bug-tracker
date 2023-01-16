@@ -2,6 +2,7 @@ import React from 'react';
 import {Outlet} from "react-router-dom";
 import ProjectList from "./projects/ProjectList";
 import BoardList from "./boards/BoardList";
+import CreateTicket from "./CreateTicket";
 
 const Layout = (props) => {
 
@@ -35,6 +36,9 @@ const Layout = (props) => {
                             Boards
                         </a>
                             <BoardList boards={boards}/>
+                    </li>
+                    <li className="nav-item">
+                        <CreateTicket />
                     </li>
                 </ul>
             </div>
