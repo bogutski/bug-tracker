@@ -16,7 +16,7 @@ const Ticket = (props) => {
                         </p>
                     </li>
                     <li className="list-group-item">
-                        <h6 className="card-title">Project Name:</h6>
+                        <h6 className="card-title">Project Name: **** </h6>
                     </li>
                     <li className="list-group-item">
                         <h6 className="card-text">Status: {status}</h6>

@@ -36,7 +36,7 @@ const Layout = (props) => {
                             <BoardList boards={boards}/>
                     </li>
                     <li className="nav-item">
-                        <CreateTicket statuses={statuses}/>
+                        <CreateTicket statuses={statuses} projects={projects} boards={boards}/>
                     </li>
                 </ul>
             </div>
