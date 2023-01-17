@@ -4,7 +4,7 @@ import {Button, Input, InputGroup, InputGroupText, Modal, ModalBody, ModalFooter
 const BoardModal = (props) => {
 
     const {modal, toggle} = props;
-    const [boardName, setBoardName] = useState('');
+    const [boardName, setBoardName] = useState();
 
 
     return (
@@ -18,7 +18,8 @@ const BoardModal = (props) => {
                         </InputGroupText>
                         <Input
                             value={boardName}
-                            onChange={(e) => setBoardName(e.target.value)}/>
+                            onChange={(e) => setBoardName(e.target.value)}
+                        />
                     </InputGroup>
                 </ModalBody>
                 <ModalFooter>
