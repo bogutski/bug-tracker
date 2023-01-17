@@ -12,7 +12,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 function App() {
 
     const [projects, setProjects] = useState([]);
-    const [boards, setBoards] = useState([])
+    const [boards, setBoards] = useState([]);
+    const [tickets, setTickets] = useState([]);
 
     const getProjects = () => {
         const projectColRef = query(collection(db, 'Project'));
@@ -31,9 +32,20 @@ function App() {
             })))
         })
     }
+
+    const getTickets = () => {
+        const coll = query(collection(db, 'Tickets'));
+        onSnapshot(coll, (snapshot) => {
+            setTickets(snapshot.docs.map(doc => ({
+                id: doc.id, ...doc.data()
+            })))
+        })
+    }
+
     useEffect(() => {
         getProjects();
         getBoards();
+        getTickets();
     }, [])
 
 
