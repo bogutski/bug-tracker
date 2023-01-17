@@ -12,9 +12,10 @@ const BoardList = (props) => {
                     <BoardItem key={board.id} board={board}/>)}
             {projectId && <div>
                 <div className="dropdown-divider"></div>
+                <CreateBoard/>
             </div>
+
             }
-            <CreateBoard/>
         </div>
     );
 };
