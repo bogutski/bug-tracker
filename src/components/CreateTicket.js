@@ -5,12 +5,22 @@ import db from "../dbConnection";
 const CreateTicket = (props) => {
     const {statuses} = props;
     const defaultStatus = statuses[0]?.statusName;
+
+    // ***** for dev/test purposes - should be replaced *****
+    // const initState = {
+    //     //boardName: 'QA automation'
+    //     boardId: 'G1styIxn9m7t2Am0daFu',
+    //     // projectName: 'Vanilla'
+    //     projectId: 'xqG9hy7825MJ7sxBH8QC',
+    // }
     const initState = {
-        //boardName: 'QA automation'
-        boardId: 'G1styIxn9m7t2Am0daFu',
-        // projectName: 'Vanilla'
-        projectId: 'xqG9hy7825MJ7sxBH8QC',
+        //boardName: 'Backend'
+        boardId: 'cJ3I6JR0XUnFP96e8o20',
+        // projectName: 'TableRow'
+        projectId: 'zNDIMSqyV06ozxjZtcQl',
     }
+    // ***** for dev/test purposes - should be replaced *****
+
     const [formData, setFormData] = useState({...initState});
 
     const onCreateTicket = () => {

@@ -71,7 +71,7 @@ function App() {
                     projects={projects}
                     boards={boards}
                 />}/>
-                <Route path='boards/:boardId' element={<Board boards={boards} tickets={tickets}/>}/>
+                <Route path='boards/:boardId' element={<Board boards={boards} tickets={tickets} statuses={statuses}/>}/>
             </Route>
         </Routes>
     </div>);

@@ -4,10 +4,10 @@ import BoardModal from "../modals/BoardModal";
 import BoardList from "./BoardList";
 import {doc, updateDoc} from "firebase/firestore";
 import db from "../../dbConnection";
-import Ticket from "../Ticket";
+import Kanban from "./Kanban";
 
 const Board = (props) => {
-  const {boards, boardName, tickets} = props;
+  const {boards, boardName, tickets, statuses} = props;
   const params = useParams();
   const boardId = params.boardId;
   const currentBoard = boards.filter(board => board.id === params.boardId)[0];
@@ -36,29 +36,7 @@ const Board = (props) => {
             />}
 
             <h1>Board: {boards?.find(board => board.id === params.boardId)?.boardName}</h1>
-            <div>
-                <h3>Kanban board</h3>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-sm">
-                            Status_1
-                            <Ticket />
-                            <Ticket />
-                        </div>
-                        <div className="col-sm">
-                            Status_2
-                            {ticketsCurrentBoard.map((item) => (
-                                <Ticket key={item.id} {...item}/>
-                            ))}
-                        </div>
-                        <div className="col-sm">
-                            Status_3
-                            <Ticket />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <Kanban statuses={statuses} tickets={ticketsCurrentBoard} />
             <button
                 className="btn btn-warning"
                 type="button"
