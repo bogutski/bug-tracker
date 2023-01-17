@@ -5,7 +5,7 @@ const Ticket = (props) => {
     return (
         <div className="card">
             <div className="card-header">
-                Ticket header: {title}
+                Title: {title}
             </div>
             <div className="card-body">
                 <ul className="list-group list-group-flush">
@@ -16,10 +16,10 @@ const Ticket = (props) => {
                         </p>
                     </li>
                     <li className="list-group-item">
-                        <h5 className="card-title">Project Name:</h5>
+                        <h6 className="card-title">Project Name:</h6>
                     </li>
                     <li className="list-group-item">
-                        <h4 className="card-text">Status: {status}</h4>
+                        <h6 className="card-text">Status: {status}</h6>
                     </li>
                 </ul>
             </div>

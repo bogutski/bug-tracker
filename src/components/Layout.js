@@ -5,9 +5,7 @@ import BoardList from "./boards/BoardList";
 import CreateTicket from "./CreateTicket";
 
 const Layout = (props) => {
-
-    const {projects, boards} = props;
-
+    const {projects, boards, statuses} = props;
     return (
         <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -38,7 +36,7 @@ const Layout = (props) => {
                             <BoardList boards={boards}/>
                     </li>
                     <li className="nav-item">
-                        <CreateTicket />
+                        <CreateTicket statuses={statuses}/>
                     </li>
                 </ul>
             </div>

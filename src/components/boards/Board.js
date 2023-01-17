@@ -1,25 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useParams} from "react-router-dom";
 import Ticket from "../Ticket";
-import {collection, query, getDocs} from "firebase/firestore";
-import db from "../../dbConnection";
 
 const Board = (props) => {
-  const {boards} = props;
+  const {boards, tickets} = props;
   const params = useParams();
   const currentBoard = boards.filter(board => board.id === params.boardId)[0];
-  const [ticketList, setTicketList] = useState([]);
-
-    const getTickets = async () => {
-        const tickets = await getDocs(query(collection(db, "Tickets")));
-        setTicketList(tickets.docs.map(doc => ({
-            id: doc.id, ...doc.data()
-        })))
-    }
-
-    useEffect(() => {
-        getTickets().then().catch(err => err);
-    }, [])
+  const ticketsCurrentBoard = tickets?.filter(ticket => ticket.boardId === currentBoard.id) || [];
 
     return (
         <div>
@@ -35,7 +22,7 @@ const Board = (props) => {
                         </div>
                         <div className="col-sm">
                             Status_2
-                            {ticketList.map((item) => (
+                            {ticketsCurrentBoard.map((item) => (
                                 <Ticket key={item.id} {...item}/>
                             ))}
                         </div>
