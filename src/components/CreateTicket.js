@@ -4,33 +4,33 @@ import db from "../dbConnection";
 
 const CreateTicket = (props) => {
   const { statuses, projects, boards } = props;
-  const [currentProject, setCurrentProject] = useState({});
+
+  const defaultStatus = statuses[0]?.statusName; // 1st status by default
+  const defaultProject = projects[1] || {}; // 'Kompot' by default
+  const defaultBoards =
+      boards.filter((board) => board.projectId === defaultProject.id) || []; // boards for 'Kompot'
+
   const [currentBoards, setCurrentBoards] = useState([]);
 
-  const defaultStatus = statuses[0]?.statusName;
-  const defaultBoardId = currentBoards?.find(
-    (item) => item.projectId === currentProject.id
-  )?.id;
-
   const initState = {
-    projectId: "",
-    boardId: "",
+    projectId: defaultProject?.id,
+    boardId: defaultBoards[0]?.id,
+    status: defaultStatus,
   };
 
   const [formData, setFormData] = useState({ ...initState });
 
   useEffect(() => {
-    setCurrentBoards(
-      boards.filter((board) => board.projectId === currentProject?.id)
-    );
-  }, [currentProject?.id]);
+      setCurrentBoards(defaultBoards);
+  }, [projects, boards]);
 
   const onCreateTicket = () => {
     const refDoc = collection(db, "Tickets");
     addDoc(refDoc, {
       ...formData,
       status: formData.status ? formData.status : defaultStatus,
-      boardId: formData.boardId ? formData.boardId : defaultBoardId,
+      boardId: formData.boardId ? formData.boardId : currentBoards[0].id,
+      projectId: formData.projectId ? formData.projectId : defaultProject.id,
     })
       .then((res) => res.id)
       .catch((err) => console.log(err));
@@ -84,18 +84,12 @@ const CreateTicket = (props) => {
                       className="form-control"
                       onChange={(e) => {
                         setFormData({ ...formData, projectId: e.target.value });
-                        setCurrentProject(
-                          projects.find((item) => item.id === e.target.value)
-                        );
-                        setCurrentBoards(
-                          boards.filter(
-                            (item) => item.projectId === e.target.value
-                          )
-                        );
+                        setCurrentBoards(boards.filter((item) => item.projectId === e.target.value));
                       }}
                     >
                       {projects.map((project) => (
-                        <option key={project.id} value={project.id}>
+                          project.projectName &&
+                              <option key={project.id} value={project.id}>
                           {project.projectName}
                         </option>
                       ))}
@@ -113,15 +107,14 @@ const CreateTicket = (props) => {
                     <select
                       id="inputBoard"
                       className="form-control"
-                      onChange={(e) => {
-                        setFormData({ ...formData, boardId: e.target.value });
-                      }}
+                      onChange={(e) => setFormData({ ...formData, boardId: e.target.value })}
+                      disabled={!currentBoards.length}
                     >
-                      {currentBoards.map((board) => (
-                        <option key={board.id} value={board.id}>
-                          {board.boardName}
-                        </option>
-                      ))}
+                      {currentBoards.length ? currentBoards.map((board) => (
+                          <option key={board.id} value={board.id}>
+                            {board.boardName}
+                          </option>
+                      )): <option>No boards for the project...</option>}
                     </select>
                   </div>
                 </div>
@@ -139,9 +132,7 @@ const CreateTicket = (props) => {
                       className="form-control"
                       id="inputTitle"
                       placeholder="Title"
-                      onChange={(e) =>
-                        setFormData({ ...formData, title: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     />
                   </div>
                 </div>
@@ -156,9 +147,7 @@ const CreateTicket = (props) => {
                     <select
                       id="inputStatus"
                       className="form-control"
-                      onChange={(e) =>
-                        setFormData({ ...formData, status: e.target.value })
-                      }
+                      onChange={(e) => setFormData({...formData, status: e.target.value})}
                     >
                       {statuses.map((status) => (
                         <option key={status.id} value={status.statusName}>
@@ -174,9 +163,9 @@ const CreateTicket = (props) => {
                     className="form-control"
                     id="inputDesc"
                     rows="3"
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
+                    onChange={(e) => {
+                      setFormData({...formData, description: e.target.value})
+                    }}
                   ></textarea>
                 </div>
               </form>
