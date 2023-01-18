@@ -2,6 +2,7 @@ import React from 'react';
 import {Outlet} from "react-router-dom";
 import ProjectList from "./projects/ProjectList";
 import BoardList from "./boards/BoardList";
+import PersonDropDown from "./PersonDropDown";
 
 const Layout = (props) => {
 
@@ -15,7 +16,7 @@ const Layout = (props) => {
                     aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse" id="navbarNavDropdown">
+            <div className="collapse navbar-collapse d-flex justify-content-around" id="navbarNavDropdown">
                 <ul className="navbar-nav">
                     <li className="nav-item active">
                         <a className="nav-link" href="/">Dashboard <span className="sr-only">(current)</span></a>
@@ -37,6 +38,7 @@ const Layout = (props) => {
                             <BoardList boards={boards}/>
                     </li>
                 </ul>
+                <PersonDropDown />
             </div>
         </nav>
         <Outlet />
