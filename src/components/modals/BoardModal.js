@@ -2,8 +2,12 @@ import React, {useState} from 'react';
 import {Button, Input, InputGroup, InputGroupText, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {addDoc, collection, doc, updateDoc} from "firebase/firestore";
 import db from "../../dbConnection";
+import {useParams} from "react-router-dom";
 
 const BoardModal = (props) => {
+    const param = useParams();
+    const currentProjectId = param.projectId;
+    console.log(currentProjectId)
 
     const {modal, toggle, title, currentBoard, boardId} = props;
     const [boardName, setBoardName] = useState(currentBoard);
@@ -12,7 +16,8 @@ const BoardModal = (props) => {
         e.preventDefault();
         const refBoardDoc = collection(db, 'Boards');
         addDoc(refBoardDoc, {
-            boardName
+            boardName,
+            projectId: currentProjectId
         })
             .then(res => res.id)
             .catch(err => console.log(err));
