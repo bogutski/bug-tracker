@@ -10,12 +10,12 @@ const Board = (props) => {
   const {boards, boardName, tickets, statuses} = props;
   const params = useParams();
   const boardId = params.boardId;
-  const currentBoard = boards.filter(board => board.id === params.boardId)[0];
+  const currentBoard = boards?.find(board => board.id === params.boardId);
   const ticketsCurrentBoard = tickets?.filter(ticket => ticket.boardId === boardId) || [];
 
+  const currentBoardName = currentBoard?.boardName;
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
-
 
     const updateBoard = (e) => {
         e.preventDefault();
@@ -23,6 +23,7 @@ const Board = (props) => {
             .then(r => console.log(r))
             .catch(err => console.log(err));
     }
+
 
     return (
         <div>
@@ -35,8 +36,7 @@ const Board = (props) => {
                 updateBoard={updateBoard}
             />}
 
-            <h1>Board: {boards?.find(board => board.id === params.boardId)?.boardName}</h1>
-            <Kanban statuses={statuses} tickets={ticketsCurrentBoard} />
+            <h1>Board: {currentBoardName}</h1>
             <button
                 className="btn btn-warning"
                 type="button"
@@ -45,6 +45,7 @@ const Board = (props) => {
             >
                 Update
             </button>
+            <Kanban statuses={statuses} tickets={ticketsCurrentBoard} />
             <BoardList  boardId={boardId}/>
         </div>
     );
