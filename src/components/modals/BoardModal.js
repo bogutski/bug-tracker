@@ -7,7 +7,6 @@ import {useParams} from "react-router-dom";
 const BoardModal = (props) => {
     const param = useParams();
     const currentProjectId = param.projectId;
-    console.log(currentProjectId)
 
     const {modal, toggle, title, currentBoard, boardId} = props;
     const [boardName, setBoardName] = useState(currentBoard);
