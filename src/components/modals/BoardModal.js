@@ -9,7 +9,7 @@ const BoardModal = (props) => {
     const currentProjectId = param.projectId;
 
     const {modal, toggle, title, currentBoard, boardId} = props;
-    const [boardName, setBoardName] = useState(currentBoard);
+    const [boardName, setBoardName] = useState(currentBoard.boardName);
 
     const createBoard = (e) => {
         e.preventDefault();
