@@ -2,12 +2,11 @@ import React from 'react';
 import {Outlet} from "react-router-dom";
 import ProjectList from "./projects/ProjectList";
 import BoardList from "./boards/BoardList";
+import CreateTicket from "./CreateTicket";
 import PersonDropDown from "./PersonDropDown";
 
 const Layout = (props) => {
-
-    const {projects, boards} = props;
-
+    const {projects, boards, statuses} = props;
     return (
         <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -35,6 +34,9 @@ const Layout = (props) => {
                             Boards
                         </a>
                             <BoardList boards={boards}/>
+                    </li>
+                    <li className="nav-item">
+                        <CreateTicket statuses={statuses} projects={projects} boards={boards}/>
                     </li>
                 </ul>
                 <PersonDropDown />

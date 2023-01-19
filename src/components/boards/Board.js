@@ -2,33 +2,41 @@ import React, {useState} from 'react';
 import {useParams} from "react-router-dom";
 import BoardModal from "../modals/BoardModal";
 import BoardList from "./BoardList";
+import {doc, updateDoc} from "firebase/firestore";
+import db from "../../dbConnection";
+import Kanban from "./Kanban";
 
 const Board = (props) => {
+  const {boards, boardName, tickets, statuses} = props;
+  const params = useParams();
+  const boardId = params.boardId;
+  const currentBoard = boards?.find(board => board.id === params.boardId);
+  const ticketsCurrentBoard = tickets?.filter(ticket => ticket.boardId === boardId) || [];
 
-    const [modal, setModal] = useState(false);
-    const toggle = () => setModal(!modal);
+  const currentBoardName = currentBoard?.boardName;
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
 
-    const {boards, boardName} = props
-
-    const params = useParams();
-    const boardId = params.boardId;
-
-    const currentBoard = boards?.find(board => board.id === params.boardId)?.boardName;
+    const updateBoard = (e) => {
+        e.preventDefault();
+        updateDoc(doc(db, 'Board', boardId), {boardName})
+            .then(r => console.log(r))
+            .catch(err => console.log(err));
+    }
 
 
     return (
         <div>
-
             {modal && <BoardModal
                 modal={modal}
                 toggle={toggle}
                 title={"Update Board"}
                 boardId={boardId}
                 currentBoard={currentBoard}
+                updateBoard={updateBoard}
             />}
 
-            <h1>Board: {currentBoard}</h1>
-
+            <h1>Board: {currentBoardName}</h1>
             <button
                 className="btn btn-warning"
                 type="button"
@@ -37,7 +45,7 @@ const Board = (props) => {
             >
                 Update
             </button>
-
+            <Kanban statuses={statuses} tickets={ticketsCurrentBoard} />
             <BoardList  boardId={boardId}/>
         </div>
     );
