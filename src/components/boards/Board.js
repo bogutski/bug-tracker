@@ -33,6 +33,7 @@ const Board = (props) => {
                 title={"Update Board"}
                 boardId={boardId}
                 currentBoard={currentBoard}
+                currentBoardName={currentBoardName}
                 updateBoard={updateBoard}
             />}
 
