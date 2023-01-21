@@ -76,6 +76,7 @@ function App() {
         <Route path='boards/:boardId' element={<Board
           boards={boards}
           tickets={tickets}
+          setTickets={setTickets}
           statuses={statuses}/>}/>
       </Route>
     </Routes>

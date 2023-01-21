@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import {useParams} from "react-router-dom";
 import BoardModal from "../modals/BoardModal";
 import BoardList from "./BoardList";
@@ -7,7 +6,7 @@ import db from "../../dbConnection";
 import Kanban from "./Kanban";
 
 const Board = (props) => {
-  const {boards, boardName, tickets, statuses} = props;
+  const {boards, boardName, tickets, statuses, setTickets} = props;
   const params = useParams();
   const boardId = params.boardId;
   const currentBoard = boards?.find(board => board.id === params.boardId);
@@ -45,7 +44,7 @@ const Board = (props) => {
             >
                 Update
             </button>
-            <Kanban statuses={statuses} tickets={ticketsCurrentBoard} />
+            <Kanban statuses={statuses} tickets={ticketsCurrentBoard} setTickets={setTickets} />
             <BoardList  boardId={boardId}/>
         </div>
     );

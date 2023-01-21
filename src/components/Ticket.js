@@ -1,12 +1,8 @@
-import React from 'react';
 
 const Ticket = (props) => {
-  const {ticket} = props;
+  const {ticket, status, moveTicket} = props;
 
-  // const moveTask = (id, dir, s) => {
-  //     const currentIndex = ticket.status.indexOf(s)
-  //
-  // }
+
   return (
     <div className="card">
       <div className="card-header">
@@ -28,11 +24,13 @@ const Ticket = (props) => {
             <button type="button"
                     className="btn btn-light"
                     disabled={ticket.status === 'To Do'}
+                    onClick={()=>moveTicket(status.id, -1, ticket.id )}
             >←
             </button>
             <button type="button"
                     className="btn btn-light"
                     disabled={ticket.status === 'Done'}
+                    onClick={()=>moveTicket(status.id, 1, ticket.id) }
             >→
             </button>
           </li>
