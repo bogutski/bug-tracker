@@ -7,8 +7,8 @@ const Kanban = (props) => {
 
 
   const moveTicket = (statusId, dir, ticketId) => {
-    const currentStatus= +statuses.find(el=>el.id===statusId).statusNumber+dir;
-    const nextStatus = statuses.find(el=>+el.statusNumber===currentStatus).statusName
+    const targetStatusNumber= +statuses.find(el=>el.id===statusId).statusNumber + dir;
+    const nextStatus = statuses.find(el=>+el.statusNumber===targetStatusNumber).statusName
     const newTicket =  tickets.map(el=>el.id===ticketId? {...el, status:nextStatus} : el)
     setTickets(newTicket)
 
