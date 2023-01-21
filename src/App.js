@@ -76,7 +76,6 @@ function App() {
     }, [])
 
     return (<div className="App">
-        <h1>{authUser ? 'Signed in' : 'Signed out'}</h1>
         <Routes>
             <Route path='/login' element={<SignIn/>}/>
             <Route path='/signup' element={<SignUp/>}/>
