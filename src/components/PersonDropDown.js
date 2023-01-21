@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {auth} from "../dbConnection";
 import {signOut} from 'firebase/auth';
 
-function PersonDropDown({direction,authUser, ...args}) {
+function PersonDropDown({direction, authUser, ...args}) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const nav = useNavigate();
@@ -18,7 +18,7 @@ function PersonDropDown({direction,authUser, ...args}) {
 
 
     function authButtonHandler() {
-        if(authUser) {
+        if (authUser) {
             signOut(auth).then(() => {
                 console.log('sign out successful');
             }).catch(err => console.log(err));
@@ -39,9 +39,11 @@ function PersonDropDown({direction,authUser, ...args}) {
                     </svg>
                 </DropdownToggle>
                 <DropdownMenu {...args} end={true}>
-                    <DropdownItem header>User</DropdownItem>
-                    <DropdownItem>Profile</DropdownItem>
-                    <DropdownItem divider/>
+                    {authUser && <>
+                        <DropdownItem header>{authUser.email}</DropdownItem>
+                        <DropdownItem>Profile</DropdownItem>
+                        <DropdownItem divider/>
+                    </>}
                     <DropdownItem onClick={authButtonHandler}>{authUser ? 'Sign out' : 'Log in'}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
