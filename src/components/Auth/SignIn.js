@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import {auth} from "../../dbConnection";
 import {signInWithEmailAndPassword} from 'firebase/auth';
+import {useNavigate} from "react-router-dom";
 
 const SignIn = () => {
+
+    const nav = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,6 +16,7 @@ const SignIn = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then(userCredential => {
                 console.log(userCredential);
+                nav('/dashboard');
             })
             .catch(err => {
                 console.log(err);
