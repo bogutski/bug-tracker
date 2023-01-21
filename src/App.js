@@ -17,45 +17,47 @@ import Protected from "./components/Auth/Protected";
 
 function App() {
 
+
     const [projects, setProjects] = useState([]);
     const [boards, setBoards] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [tickets, setTickets] = useState([]);
     const [authUser, setAuthUser] = useState({});
 
-    const getProjects = () => {
-        const projectColRef = query(collection(db, 'Project'));
-        onSnapshot(projectColRef, (snapshot) => {
-            setProjects(snapshot.docs.map(doc => ({
-                id: doc.id, ...doc.data()
-            })))
-        })
-    }
+  const getProjects = () => {
+    const projectColRef = query(collection(db, 'Project'));
+    onSnapshot(projectColRef, (snapshot) => {
+      setProjects(snapshot.docs.map(doc => ({
+        id: doc.id, ...doc.data()
+      })))
+    })
+  }
 
-    const getBoards = () => {
-        const coll = query(collection(db, 'Boards'));
-        onSnapshot(coll, (snapshot) => {
-            setBoards(snapshot.docs.map(doc => ({
-                id: doc.id, ...doc.data()
-            })))
-        })
-    }
+  const getBoards = () => {
+    const coll = query(collection(db, 'Boards'));
+    onSnapshot(coll, (snapshot) => {
+      setBoards(snapshot.docs.map(doc => ({
+        id: doc.id, ...doc.data()
+      })))
+    })
+  }
 
-    const getTickets = async () => {
-        const tickets = await getDocs(query(collection(db, "Tickets")));
-        setTickets(tickets.docs.map(doc => ({
-            id: doc.id, ...doc.data()
-        })))
-    }
+  const getTickets = async () => {
+    const tickets = await getDocs(query(collection(db, "Tickets")));
+    setTickets(tickets.docs.map(doc => ({
+      id: doc.id, ...doc.data()
+    })))
+  }
 
-    const getStatuses = () => {
-        const statuses = query(collection(db, 'Statuses'));
-        onSnapshot(statuses, (snapshot) => {
-            setStatuses(snapshot.docs.map(doc => ({
-                id: doc.id, ...doc.data()
-            })))
-        })
-    }
+  const getStatuses = () => {
+    const statuses = query(collection(db, 'Statuses'));
+    onSnapshot(statuses, (snapshot) => {
+      setStatuses(snapshot.docs.map(doc => ({
+        id: doc.id, ...doc.data()
+      })))
+    })
+  }
+
 
     useEffect(() => {
         getProjects();
@@ -75,6 +77,7 @@ function App() {
         }
     }, [])
 
+
     return (<div className="App">
         <Routes>
             <Route path='/login' element={<SignIn/>}/>
@@ -92,7 +95,11 @@ function App() {
                     projects={projects}
                     boards={boards}
                 /></Protected>}/>
-                <Route path='boards/:boardId' element={<Protected user={authUser}><Board boards={boards} tickets={tickets} statuses={statuses}/></Protected>}/>
+                <Route path='boards/:boardId' element={<Protected user={authUser}><Board 
+                boards={boards} 
+                setTickets={setTickets}
+                tickets={tickets} 
+                statuses={statuses}/></Protected>}/>
             </Route>
         </Routes>
     </div>);
