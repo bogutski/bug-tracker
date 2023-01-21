@@ -16,10 +16,10 @@ const Layout = (props) => {
                     <li>
                     <a className="navbar-brand" href="/">🐞Bug-Tracker </a>
                     </li>
-                    <li className="nav-item active">
+                    <li className="nav-item active" hidden={!authUser}>
                         <a className="nav-link" href="/dashboard">Dashboard <span className="sr-only">(current)</span></a>
                     </li>
-                    <li className="nav-item dropdown">
+                    <li className="nav-item dropdown" hidden={!authUser}>
                         <a className="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Projects
@@ -28,14 +28,14 @@ const Layout = (props) => {
                             projects={projects}
                         />
                     </li>
-                    <li className="nav-item dropdown">
+                    <li className="nav-item dropdown" hidden={!authUser}>
                         <a className="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Boards
                         </a>
                             <BoardList boards={boards}/>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item" hidden={!authUser}>
                         <CreateTicket statuses={statuses} projects={projects} boards={boards}/>
                     </li>
                 </ul>
