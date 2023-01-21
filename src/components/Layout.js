@@ -14,10 +14,10 @@ const Layout = (props) => {
             <div className="collapse navbar-collapse d-flex justify-content-between" id="navbarNavDropdown">
                 <ul className="navbar-nav">
                     <li>
-                    <a className="navbar-brand" href="#">🐞Bug-Tracker </a>
+                    <a className="navbar-brand" href="/">🐞Bug-Tracker </a>
                     </li>
                     <li className="nav-item active">
-                        <a className="nav-link" href="/">Dashboard <span className="sr-only">(current)</span></a>
+                        <a className="nav-link" href="/dashboard">Dashboard <span className="sr-only">(current)</span></a>
                     </li>
                     <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink"

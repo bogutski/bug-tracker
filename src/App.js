@@ -8,6 +8,9 @@ import {useEffect, useState} from "react";
 import {query, collection, onSnapshot, getDocs} from 'firebase/firestore';
 import db from './dbConnection'
 import 'bootstrap/dist/css/bootstrap.css'
+import Home from "./components/Home";
+import SignIn from "./components/Auth/SignIn";
+import SignUp from "./components/Auth/SignUp";
 
 function App() {
 
@@ -60,13 +63,16 @@ function App() {
 
     return (<div className="App">
         <Routes>
+            <Route path='/login' element={<SignIn/>}/>
+            <Route path='/signup' element={<SignUp/>}/>
             <Route path='/' element={<Layout
                 projects={projects}
                 boards={boards}
                 statuses={statuses}
                 tickets={tickets}
             />}>
-                <Route index element={<Dashboard/>}/>
+                <Route index element={<Home/>}/>
+                <Route path='/dashboard' element={<Dashboard/>}/>
                 <Route path='projects/:projectId' element={<Project
                     projects={projects}
                     boards={boards}

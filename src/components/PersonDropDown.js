@@ -5,11 +5,16 @@ import {
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap';
+import {useNavigate} from "react-router-dom";
 
 function PersonDropDown({direction, ...args}) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
+    const nav = useNavigate();
+
     const toggle = () => setDropdownOpen((prevState) => !prevState);
+
+
 
     return (
         <>
@@ -26,7 +31,7 @@ function PersonDropDown({direction, ...args}) {
                     <DropdownItem header>User</DropdownItem>
                     <DropdownItem>Profile</DropdownItem>
                     <DropdownItem divider/>
-                    <DropdownItem>Sign out</DropdownItem>
+                    <DropdownItem onClick={() => nav('/login')}>Sign out</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         </>
