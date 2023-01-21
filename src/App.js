@@ -12,6 +12,7 @@ import Home from "./components/Home";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
 import {onAuthStateChanged} from 'firebase/auth';
+import Protected from "./components/Auth/Protected";
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
     const [boards, setBoards] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [tickets, setTickets] = useState([]);
-    const [authUser, setAuthUser] = useState(null);
+    const [authUser, setAuthUser] = useState({});
 
     const getProjects = () => {
         const projectColRef = query(collection(db, 'Project'));
@@ -74,7 +75,6 @@ function App() {
         }
     }, [])
 
-
     return (<div className="App">
         <h1>{authUser ? 'Signed in' : 'Signed out'}</h1>
         <Routes>
@@ -88,12 +88,12 @@ function App() {
                 authUser={authUser}
             />}>
                 <Route index element={<Home/>}/>
-                <Route path='/dashboard' element={<Dashboard/>}/>
-                <Route path='projects/:projectId' element={<Project
+                <Route path='/dashboard' element={<Protected user={authUser}><Dashboard/></Protected>}/>
+                <Route path='projects/:projectId' element={<Protected user={authUser}><Project
                     projects={projects}
                     boards={boards}
-                />}/>
-                <Route path='boards/:boardId' element={<Board boards={boards} tickets={tickets} statuses={statuses}/>}/>
+                /></Protected>}/>
+                <Route path='boards/:boardId' element={<Protected user={authUser}><Board boards={boards} tickets={tickets} statuses={statuses}/></Protected>}/>
             </Route>
         </Routes>
     </div>);
