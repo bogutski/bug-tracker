@@ -21,6 +21,7 @@ function PersonDropDown({direction, authUser, ...args}) {
         if (authUser.email) {
             signOut(auth).then(() => {
                 console.log('sign out successful');
+                nav('/');
             }).catch(err => console.log(err));
         } else {
             nav('/login');
