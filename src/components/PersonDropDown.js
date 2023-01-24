@@ -18,9 +18,10 @@ function PersonDropDown({direction, authUser, ...args}) {
 
 
     function authButtonHandler() {
-        if (authUser) {
+        if (authUser.email) {
             signOut(auth).then(() => {
                 console.log('sign out successful');
+                nav('/');
             }).catch(err => console.log(err));
         } else {
             nav('/login');
@@ -39,12 +40,12 @@ function PersonDropDown({direction, authUser, ...args}) {
                     </svg>
                 </DropdownToggle>
                 <DropdownMenu {...args} end={true}>
-                    {authUser && <>
+                    {authUser.email && <>
                         <DropdownItem header>{authUser.email}</DropdownItem>
                         <DropdownItem>Profile</DropdownItem>
                         <DropdownItem divider/>
                     </>}
-                    <DropdownItem onClick={authButtonHandler}>{authUser ? 'Sign out' : 'Log in'}</DropdownItem>
+                    <DropdownItem onClick={authButtonHandler}>{authUser.email ? 'Sign out' : 'Log in'}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         </>
