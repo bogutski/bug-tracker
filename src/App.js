@@ -69,7 +69,7 @@ function App() {
             if(user) {
                 setAuthUser(user);
             } else {
-                setAuthUser({});
+                setAuthUser(null);
             }
         })
         return () => {
