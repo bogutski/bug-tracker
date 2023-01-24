@@ -18,7 +18,7 @@ function PersonDropDown({direction, authUser, ...args}) {
 
 
     function authButtonHandler() {
-        if (authUser) {
+        if (authUser.email) {
             signOut(auth).then(() => {
                 console.log('sign out successful');
             }).catch(err => console.log(err));
@@ -44,7 +44,7 @@ function PersonDropDown({direction, authUser, ...args}) {
                         <DropdownItem>Profile</DropdownItem>
                         <DropdownItem divider/>
                     </>}
-                    <DropdownItem onClick={authButtonHandler}>{authUser ? 'Sign out' : 'Log in'}</DropdownItem>
+                    <DropdownItem onClick={authButtonHandler}>{authUser.email ? 'Sign out' : 'Log in'}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         </>
