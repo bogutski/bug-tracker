@@ -39,7 +39,7 @@ function PersonDropDown({direction, authUser, ...args}) {
                     </svg>
                 </DropdownToggle>
                 <DropdownMenu {...args} end={true}>
-                    {authUser && <>
+                    {authUser.email && <>
                         <DropdownItem header>{authUser.email}</DropdownItem>
                         <DropdownItem>Profile</DropdownItem>
                         <DropdownItem divider/>
