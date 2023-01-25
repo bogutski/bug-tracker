@@ -1,13 +1,25 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 const ModalTicket = (props) => {
     const {
-        setFormData, formData,
-        setCurrentBoards, currentBoards,
+        onChange,
+        initState,
+        formData,
         statuses, projects, boards,
         onActionTicket,
         modalTitle, actionName
-    } = props
+    } = props;
+
+    const [currentBoards, setCurrentBoards] = useState([]);
+
+    useEffect(() => {
+        setCurrentBoards(boards.filter((item) => item.projectId === initState.projectId));
+    }, [initState.projectId]);
+
+    useEffect(() => {
+        setCurrentBoards(boards.filter((item) => item.projectId === formData.projectId));
+    }, [formData.projectId]);
+
     return ( <>
         <div className="modal-dialog" role="document">
             <div className="modal-content">
@@ -37,14 +49,13 @@ const ModalTicket = (props) => {
                         <select
                             id="inputProject"
                             className="form-control"
-                            onChange={(e) => {
-                                setFormData({ ...formData, projectId: e.target.value });
-                                setCurrentBoards(boards.filter((item) => item.projectId === e.target.value));
-                            }}
+                            name="projectId"
+                            defaultValue={initState.projectId}
+                            onChange={(e) => onChange(e)}
                         >
                             {projects.map((project) => (
                                 project.projectName &&
-                                <option key={project.id} value={project.id}>
+                                <option key={project.id} value={project.id} selected={initState.projectId === project.id}>
                                     {project.projectName}
                                 </option>
                             ))}
@@ -62,10 +73,11 @@ const ModalTicket = (props) => {
                         <select
                             id="inputBoard"
                             className="form-control"
-                            onChange={(e) => setFormData({ ...formData, boardId: e.target.value })}
-                            disabled={!currentBoards.length}
+                            name="boardId"
+                            onChange={onChange}
+                            disabled={!currentBoards?.length}
                         >
-                            {currentBoards.length ? currentBoards.map((board) => (
+                            {currentBoards?.length ? currentBoards.map((board) => (
                                 <option key={board.id} value={board.id}>
                                     {board.boardName}
                                 </option>
@@ -86,8 +98,9 @@ const ModalTicket = (props) => {
                             type="text"
                             className="form-control"
                             id="inputTitle"
+                            name="title"
                             placeholder="Title"
-                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                            onChange={onChange}
                         />
                     </div>
                 </div>
@@ -102,10 +115,11 @@ const ModalTicket = (props) => {
                         <select
                             id="inputStatus"
                             className="form-control"
-                            onChange={(e) => setFormData({...formData, status: e.target.value})}
+                            name="status"
+                            onChange={onChange}
                         >
                             {statuses.map((status) => (
-                                <option key={status.id} value={status.statusName}>
+                                <option key={status.id} value={status.statusName} >
                                     {status.statusName}
                                 </option>
                             ))}
@@ -117,10 +131,9 @@ const ModalTicket = (props) => {
                     <textarea
                         className="form-control"
                         id="inputDesc"
+                        name="description"
                         rows="3"
-                        onChange={(e) => {
-                            setFormData({...formData, description: e.target.value})
-                        }}
+                        onChange={onChange}
                     ></textarea>
                 </div>
             </form>
@@ -137,9 +150,7 @@ const ModalTicket = (props) => {
                         type="button"
                         className="btn btn-primary"
                         data-dismiss="modal"
-                        // onClick={onCreateTicket}
                         onClick={onActionTicket}
-
                     >
                         {actionName}
                     </button>

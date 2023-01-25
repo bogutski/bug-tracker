@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import db from "../dbConnection";
 import ModalTicket from "./modals/ModalTicket";
 
 const CreateTicket = (props) => {
   const { statuses, projects, boards } = props;
-  const defaultStatus = statuses[0]?.statusName; // 1st status by default
-  const defaultProject = projects[1] || {}; // 'Kompot' by default
-  const defaultBoards =
-      boards.filter((board) => board.projectId === defaultProject.id) || []; // boards for 'Kompot'
 
-  const [currentBoards, setCurrentBoards] = useState([]);
+  statuses.sort((a, b) => +(a.statusNumber) - +(b.statusNumber));
+  const defaultStatus = statuses.length ? statuses[0].statusName : '';
+  const defaultProject = projects[1] || {}; // 'Kompot' by default
+  const defaultBoards = boards?.filter((board) => board.projectId === defaultProject.id) || []; // boards for 'Kompot'
 
   const initState = {
     projectId: defaultProject?.id,
@@ -18,24 +17,23 @@ const CreateTicket = (props) => {
     status: defaultStatus,
   };
 
-  const [formData, setFormData] = useState({ ...initState });
-
-  useEffect(() => {
-      setCurrentBoards(defaultBoards);
-  }, [projects, boards]);
+  const [formData, setFormData] = useState({...initState});
 
   const onCreateTicket = () => {
     const refDoc = collection(db, "Tickets");
-    addDoc(refDoc, {
-      ...formData,
-      status: formData.status ? formData.status : defaultStatus,
-      boardId: formData.boardId ? formData.boardId : currentBoards[0].id,
-      projectId: formData.projectId ? formData.projectId : defaultProject.id,
-    })
+    addDoc(refDoc, { ...formData })
       .then((res) => res.id)
       .catch((err) => console.log(err));
     setFormData({ ...initState });
   };
+
+    const onChange = e => {
+        const newFormState = {
+            ...formData,
+            [e.target.name]: e.target.value,
+        };
+        setFormData({...newFormState});
+    };
 
   return (
     <div>
@@ -54,13 +52,15 @@ const CreateTicket = (props) => {
         role="dialog"
         aria-hidden="true"
       >
-          <ModalTicket setFormData={setFormData} formData={formData}
-                         setCurrentBoards={setCurrentBoards}
-                         currentBoards={currentBoards} boards={boards}
-                         projects={projects} statuses={statuses}
-                         onActionTicket={onCreateTicket}
-                         modalTitle='Create Ticket'
-                         actionName='Create'
+          <ModalTicket formData={formData}
+                       onChange={onChange}
+                       initState={initState}
+                       boards={boards}
+                       projects={projects}
+                       statuses={statuses}
+                       onActionTicket={onCreateTicket}
+                       modalTitle='Create Ticket'
+                       actionName='Create'
             />
       </div>
     </div>
