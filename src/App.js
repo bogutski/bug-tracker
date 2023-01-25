@@ -13,7 +13,7 @@ import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
 import {onAuthStateChanged} from 'firebase/auth';
 import Protected from "./components/Auth/Protected";
-
+import UserProfile from "./components/profile/UserProfile";
 
 function App() {
 
@@ -101,6 +101,7 @@ function App() {
                 tickets={tickets} 
                 statuses={statuses}/></Protected>}/>
             </Route>
+            <Route path='/user' element={<UserProfile/>}/>
         </Routes>
     </div>);
 }
