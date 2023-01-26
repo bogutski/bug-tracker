@@ -29,7 +29,7 @@ const ModalTicket = (props) => {
         setTitle('');
         setDescription('');
         setStatus(statuses[0]?.statusName);
-    }, [getBoards, initState.projectId, modal]);
+    }, [getBoards, initState.projectId, modal, statuses]);
 
     // change boards depends on the current project
     useEffect(() => {
