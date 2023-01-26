@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { addDoc, collection } from "firebase/firestore";
 import db from "../dbConnection";
 import ModalTicket from "./modals/ModalTicket";
@@ -10,13 +10,17 @@ const CreateTicket = (props) => {
   const defaultStatus = statuses.length ? statuses[0].statusName : '';
   // choose default project
   const defaultProject = projects[1] || {}; // 'Kompot' by default
-  const defaultBoards = boards?.filter((board) => board.projectId === defaultProject.id) || []; // boards for 'Kompot'
+  // boards for default project
+  const defaultBoards = boards?.filter((board) => board.projectId === defaultProject.id) || [];
 
   const initState = {
     projectId: defaultProject?.id,
     boardId: defaultBoards[0]?.id,
     status: defaultStatus,
   };
+
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
 
   const [formData, setFormData] = useState({});
 
@@ -25,7 +29,6 @@ const CreateTicket = (props) => {
     addDoc(refDoc, { ...formData })
       .then((res) => res.id)
       .catch((err) => console.log(err));
-    setFormData(initState);
   };
 
     const onChange = e => {
@@ -43,6 +46,7 @@ const CreateTicket = (props) => {
         className="btn btn-primary"
         data-toggle="modal"
         data-target="#createTicketModal"
+        onClick={toggle}
       >
         Create Ticket
       </button>
@@ -61,6 +65,8 @@ const CreateTicket = (props) => {
                        projects={projects}
                        statuses={statuses}
                        onActionTicket={onCreateTicket}
+                       onClose={toggle}
+                       modal={modal}
                        modalTitle='Create Ticket'
                        actionName='Create'
             />

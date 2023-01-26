@@ -3,6 +3,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 const ModalTicket = (props) => {
     const {
         onChange,
+        onClose,
+        modal,
         initState,
         setFormData,
         formData,
@@ -16,13 +18,18 @@ const ModalTicket = (props) => {
 
     const [currentBoards, setCurrentBoards] = useState([]);
     const [title, setTitle] = useState('');
-    const [selectedProject, setSelectedProject] = useState('');
+    const [project, setProject] = useState('');
+    const [status, setStatus] = useState('');
+    const [description, setDescription] = useState('');
 
-    // in case of initial state
+    // set initial state
     useEffect(() => {
         setCurrentBoards(getBoards(initState.projectId));
-        setSelectedProject(initState.projectId);
-    }, [getBoards, initState.projectId]);
+        setProject(initState.projectId);
+        setTitle('');
+        setDescription('');
+        setStatus(statuses[0]?.statusName);
+    }, [getBoards, initState.projectId, modal]);
 
     // change boards depends on the current project
     useEffect(() => {
@@ -51,6 +58,7 @@ const ModalTicket = (props) => {
                         className="close"
                         data-dismiss="modal"
                         aria-label="Close"
+                        onClick={onClose}
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -69,9 +77,9 @@ const ModalTicket = (props) => {
                             id="inputProject"
                             className="form-control"
                             name="projectId"
-                            value={selectedProject}
+                            value={project}
                             onChange={(e) => {
-                                setSelectedProject(e.target.value);
+                                setProject(e.target.value);
                                 onChange(e);
                             }}
                         >
@@ -143,7 +151,11 @@ const ModalTicket = (props) => {
                             id="inputStatus"
                             className="form-control"
                             name="status"
-                            onChange={onChange}
+                            value={status}
+                            onChange={(e) => {
+                                setStatus(e.target.value)
+                                onChange(e);
+                            }}
                         >
                             {statuses.map((status) => (
                                 <option key={status.id} value={status.statusName} >
@@ -160,7 +172,11 @@ const ModalTicket = (props) => {
                         id="inputDesc"
                         name="description"
                         rows="3"
-                        onChange={onChange}
+                        value={description}
+                        onChange={(e) => {
+                            setDescription(e.target.value);
+                            onChange(e);
+                        }}
                     ></textarea>
                 </div>
             </form>
@@ -170,6 +186,7 @@ const ModalTicket = (props) => {
                         type="button"
                         className="btn btn-secondary"
                         data-dismiss="modal"
+                        onClick={onClose}
                     >
                         Close
                     </button>
