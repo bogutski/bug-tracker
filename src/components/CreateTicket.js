@@ -8,6 +8,7 @@ const CreateTicket = (props) => {
 
   statuses.sort((a, b) => +(a.statusNumber) - +(b.statusNumber));
   const defaultStatus = statuses.length ? statuses[0].statusName : '';
+  // choose default project
   const defaultProject = projects[1] || {}; // 'Kompot' by default
   const defaultBoards = boards?.filter((board) => board.projectId === defaultProject.id) || []; // boards for 'Kompot'
 
@@ -17,22 +18,22 @@ const CreateTicket = (props) => {
     status: defaultStatus,
   };
 
-  const [formData, setFormData] = useState({...initState});
+  const [formData, setFormData] = useState({});
 
   const onCreateTicket = () => {
     const refDoc = collection(db, "Tickets");
     addDoc(refDoc, { ...formData })
       .then((res) => res.id)
       .catch((err) => console.log(err));
-    setFormData({ ...initState });
+    setFormData(initState);
   };
 
     const onChange = e => {
         const newFormState = {
-            ...formData,
+            ...initState, ...formData,
             [e.target.name]: e.target.value,
         };
-        setFormData({...newFormState});
+        setFormData(newFormState);
     };
 
   return (
@@ -55,6 +56,7 @@ const CreateTicket = (props) => {
           <ModalTicket formData={formData}
                        onChange={onChange}
                        initState={initState}
+                       setFormData={setFormData}
                        boards={boards}
                        projects={projects}
                        statuses={statuses}

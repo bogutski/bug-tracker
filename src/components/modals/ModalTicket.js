@@ -1,24 +1,43 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 const ModalTicket = (props) => {
     const {
         onChange,
         initState,
+        setFormData,
         formData,
         statuses, projects, boards,
         onActionTicket,
         modalTitle, actionName
     } = props;
 
+    const getBoards = useCallback((id) => boards.filter((item) => item.projectId === id),
+        [boards])
+
     const [currentBoards, setCurrentBoards] = useState([]);
+    const [title, setTitle] = useState('');
+    const [selectedProject, setSelectedProject] = useState('');
 
+    // in case of initial state
     useEffect(() => {
-        setCurrentBoards(boards.filter((item) => item.projectId === initState.projectId));
-    }, [initState.projectId]);
+        setCurrentBoards(getBoards(initState.projectId));
+        setSelectedProject(initState.projectId);
+    }, [getBoards, initState.projectId]);
 
+    // change boards depends on the current project
     useEffect(() => {
-        setCurrentBoards(boards.filter((item) => item.projectId === formData.projectId));
-    }, [formData.projectId]);
+        if (formData?.projectId) {
+            const currentBoards = getBoards(formData.projectId);
+            if (currentBoards.length) {
+                setCurrentBoards(currentBoards);
+                // when change project, set a first board by default
+                setFormData((data) => ({...data, boardId: currentBoards[0].id}))
+            } else {
+                setCurrentBoards([]);
+                setFormData((data) => ({...data, boardId: ''}))
+            }
+        }
+    }, [getBoards, formData?.projectId, setFormData]);
 
     return ( <>
         <div className="modal-dialog" role="document">
@@ -37,7 +56,7 @@ const ModalTicket = (props) => {
                     </button>
                 </div>
         <div className="modal-body">
-            <form>
+            <form className="needs-validation" noValidate>
                 <div className="form-group row">
                     <label
                         htmlFor="inputProject"
@@ -50,12 +69,15 @@ const ModalTicket = (props) => {
                             id="inputProject"
                             className="form-control"
                             name="projectId"
-                            defaultValue={initState.projectId}
-                            onChange={(e) => onChange(e)}
+                            value={selectedProject}
+                            onChange={(e) => {
+                                setSelectedProject(e.target.value);
+                                onChange(e);
+                            }}
                         >
                             {projects.map((project) => (
                                 project.projectName &&
-                                <option key={project.id} value={project.id} selected={initState.projectId === project.id}>
+                                <option key={project.id} value={project.id}>
                                     {project.projectName}
                                 </option>
                             ))}
@@ -72,9 +94,9 @@ const ModalTicket = (props) => {
                     <div className="col-sm-10">
                         <select
                             id="inputBoard"
-                            className="form-control"
+                            className={`form-control ${!currentBoards?.length && 'is-invalid' } `}
                             name="boardId"
-                            onChange={onChange}
+                            onChange={(e) => onChange(e)}
                             disabled={!currentBoards?.length}
                         >
                             {currentBoards?.length ? currentBoards.map((board) => (
@@ -96,11 +118,16 @@ const ModalTicket = (props) => {
                     <div className="col-sm-10">
                         <input
                             type="text"
-                            className="form-control"
+                            className={`form-control ${!title && 'is-invalid' } `}
                             id="inputTitle"
                             name="title"
                             placeholder="Title"
-                            onChange={onChange}
+                            required
+                            value={title}
+                            onChange={(e) => {
+                                setTitle(e.target.value);
+                                onChange(e);
+                            }}
                         />
                     </div>
                 </div>
@@ -151,6 +178,7 @@ const ModalTicket = (props) => {
                         className="btn btn-primary"
                         data-dismiss="modal"
                         onClick={onActionTicket}
+                        disabled={!title || !currentBoards.length}
                     >
                         {actionName}
                     </button>
