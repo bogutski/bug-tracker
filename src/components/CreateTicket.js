@@ -5,19 +5,7 @@ import ModalTicket from "./modals/ModalTicket";
 
 const CreateTicket = (props) => {
   const { statuses, projects, boards } = props;
-
   statuses.sort((a, b) => +(a.statusNumber) - +(b.statusNumber));
-  const defaultStatus = statuses.length ? statuses[0].statusName : '';
-  // choose default project
-  const defaultProject = projects[1] || {}; // 'Kompot' by default
-  // boards for default project
-  const defaultBoards = boards?.filter((board) => board.projectId === defaultProject.id) || [];
-
-  const initState = {
-    projectId: defaultProject?.id,
-    boardId: defaultBoards[0]?.id,
-    status: defaultStatus,
-  };
 
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -32,11 +20,10 @@ const CreateTicket = (props) => {
   };
 
     const onChange = e => {
-        const newFormState = {
-            ...initState, ...formData,
-            [e.target.name]: e.target.value,
-        };
-        setFormData(newFormState);
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value}
+        );
     };
 
   return (
@@ -57,10 +44,7 @@ const CreateTicket = (props) => {
         role="dialog"
         aria-hidden="true"
       >
-          <ModalTicket formData={formData}
-                       onChange={onChange}
-                       initState={initState}
-                       setFormData={setFormData}
+          <ModalTicket onChange={onChange}
                        boards={boards}
                        projects={projects}
                        statuses={statuses}

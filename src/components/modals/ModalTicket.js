@@ -5,46 +5,53 @@ const ModalTicket = (props) => {
         onChange,
         onClose,
         modal,
-        initState,
-        setFormData,
-        formData,
         statuses, projects, boards,
         onActionTicket,
         modalTitle, actionName
     } = props;
 
-    const getBoards = useCallback((id) => boards.filter((item) => item.projectId === id),
-        [boards])
+    const getBoards = useCallback((id) => {
+            if (boards.length)
+                return boards.filter((item) => item.projectId === id);
+            else return []
+        }, [boards]);
 
     const [currentBoards, setCurrentBoards] = useState([]);
     const [title, setTitle] = useState('');
+    const [board, setBoard] = useState('');
     const [project, setProject] = useState('');
     const [status, setStatus] = useState('');
     const [description, setDescription] = useState('');
+    const [isDirty, setIsDirty] = useState(false); // first form render - don't show errors
+    const [isValid, setValid] = useState(false);
 
-    // set initial state
+    // back to initial state when open/close the form
     useEffect(() => {
-        setCurrentBoards(getBoards(initState.projectId));
-        setProject(initState.projectId);
+        setCurrentBoards([]);
+        setProject('');
+        setBoard('');
         setTitle('');
         setDescription('');
-        setStatus(statuses[0]?.statusName);
-    }, [getBoards, initState.projectId, modal, statuses]);
+        setStatus('');
+        setIsDirty(false);
+        setValid(false);
+    }, [modal]);
 
-    // change boards depends on the current project
     useEffect(() => {
-        if (formData?.projectId) {
-            const currentBoards = getBoards(formData.projectId);
+        if (project) {
+            const currentBoards = getBoards(project);
             if (currentBoards.length) {
                 setCurrentBoards(currentBoards);
-                // when change project, set a first board by default
-                setFormData((data) => ({...data, boardId: currentBoards[0].id}))
             } else {
                 setCurrentBoards([]);
-                setFormData((data) => ({...data, boardId: ''}))
             }
+            setBoard('');
         }
-    }, [getBoards, formData?.projectId, setFormData]);
+    }, [getBoards, project]);
+
+    useEffect(() => {
+        setValid(!isDirty || (title && status && project && board && currentBoards.length));
+    }, [title, project, board, status, isDirty, currentBoards.length])
 
     return ( <>
         <div className="modal-dialog" role="document">
@@ -75,14 +82,21 @@ const ModalTicket = (props) => {
                     <div className="col-sm-10">
                         <select
                             id="inputProject"
-                            className="form-control"
+                            className={`form-control ${!project && isDirty && 'is-invalid' } `}
                             name="projectId"
                             value={project}
+                            required
                             onChange={(e) => {
+                                setIsDirty(true);
                                 setProject(e.target.value);
                                 onChange(e);
                             }}
                         >
+                           { !project &&
+                               <option key={'defaultProjectKey'} value={''}>
+                                   {'Select a project...'}
+                               </option>
+                            }
                             {projects.map((project) => (
                                 project.projectName &&
                                 <option key={project.id} value={project.id}>
@@ -102,16 +116,26 @@ const ModalTicket = (props) => {
                     <div className="col-sm-10">
                         <select
                             id="inputBoard"
-                            className={`form-control ${!currentBoards?.length && 'is-invalid' } `}
+                            className={`form-control ${!board && isDirty && 'is-invalid' } `}
                             name="boardId"
-                            onChange={(e) => onChange(e)}
+                            required
+                            value={board ? board : 'Select a board...'}
+                            onChange={(e) => {
+                                setIsDirty(true);
+                                setBoard(e.target.value);
+                                onChange(e);
+                            }}
                             disabled={!currentBoards?.length}
                         >
-                            {currentBoards?.length ? currentBoards.map((board) => (
+                            {project && !currentBoards?.length && <option>No boards for the project...</option>}
+                            <option key={'defaultBoardKey'} value={''}>
+                                {'Select a board...'}
+                            </option>
+                            {project && currentBoards?.length &&
+                                currentBoards.map((board) => (
                                 <option key={board.id} value={board.id}>
                                     {board.boardName}
-                                </option>
-                            )): <option>No boards for the project...</option>}
+                                </option>))}
                         </select>
                     </div>
                 </div>
@@ -126,13 +150,13 @@ const ModalTicket = (props) => {
                     <div className="col-sm-10">
                         <input
                             type="text"
-                            className={`form-control ${!title && 'is-invalid' } `}
+                            className={`form-control ${!title && isDirty && 'is-invalid' } `}
                             id="inputTitle"
                             name="title"
-                            placeholder="Title"
                             required
                             value={title}
                             onChange={(e) => {
+                                setIsDirty(true);
                                 setTitle(e.target.value);
                                 onChange(e);
                             }}
@@ -149,14 +173,19 @@ const ModalTicket = (props) => {
                     <div className="col-sm-10">
                         <select
                             id="inputStatus"
-                            className="form-control"
+                            className={`form-control ${!status && isDirty && 'is-invalid' } `}
                             name="status"
+                            required
                             value={status}
                             onChange={(e) => {
+                                setIsDirty(true);
                                 setStatus(e.target.value)
                                 onChange(e);
                             }}
                         >
+                            {!status && <option key={'defaultStatusKey'} value={''}>
+                                {'Select a status...'}
+                            </option>}
                             {statuses.map((status) => (
                                 <option key={status.id} value={status.statusName} >
                                     {status.statusName}
@@ -174,6 +203,7 @@ const ModalTicket = (props) => {
                         rows="3"
                         value={description}
                         onChange={(e) => {
+                            setIsDirty(true);
                             setDescription(e.target.value);
                             onChange(e);
                         }}
@@ -195,7 +225,7 @@ const ModalTicket = (props) => {
                         className="btn btn-primary"
                         data-dismiss="modal"
                         onClick={onActionTicket}
-                        disabled={!title || !currentBoards.length}
+                        disabled={!isValid}
                     >
                         {actionName}
                     </button>
