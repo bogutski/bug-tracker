@@ -15,7 +15,7 @@ function DeleteModal(props) {
     function onDelete() {
         deleteProject(projectid);
         toggle();
-        setTimeout(() => window.location = '/', 200)
+        setTimeout(() => window.location = '/dashboard', 200)
     }
 
     return (
