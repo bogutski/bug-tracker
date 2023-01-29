@@ -17,11 +17,9 @@ const style= {
 }
 function PersonDropDown({direction, authUser, ...args}) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-
     const nav = useNavigate();
 
     const toggle = () => setDropdownOpen((prevState) => !prevState);
-
 
     function authButtonHandler() {
         if (authUser.email) {
