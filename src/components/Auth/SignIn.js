@@ -1,8 +1,7 @@
-// import React, {useState} from 'react';
+import React from 'react';
 import {auth} from "../../dbConnection";
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useNavigate} from "react-router-dom";
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,8 +15,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useState} from "react";
+import {UserAuth} from "./AuthContext";
+import GoogleButton from 'react-google-button'
 
+const googleBtnStyle = {
+    borderRadius: '8px',
+    width: '100%',
+    color: 'black'
+}
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -32,12 +37,9 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
-
 export default function SignIn() {
-
-
+    const { googleSignIn } = UserAuth();
     const nav = useNavigate();
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -51,6 +53,14 @@ export default function SignIn() {
                 console.log(err);
             })
     };
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await googleSignIn();
+        } catch (error) {
+            console.log(error)
+        }
+        };
 
     return (
         <ThemeProvider theme={theme}>
@@ -97,24 +107,32 @@ export default function SignIn() {
                         />
                         <Button
                             type="submit"
-                            fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{ mt: 3, mb: 4 }}
                         >
                             Sign In
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
+                        <Grid container spacing={1.5}>
+                            <Grid item xs={6}>
+                                <Link href="/reset-password" variant="body2" underline="none">
                                     Forgot password?
                                 </Link>
                             </Grid>
-                            <Grid item>
-                                <Link href="/signup" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                            <Grid item xs={6}>
+                                <Link href="/signup" variant="body2" underline="none">
+                                    {"Create account"}
                                 </Link>
                             </Grid>
                         </Grid>
+                        <Box sx={{ mt: 2 }}>
+                            <GoogleButton
+                              style={googleBtnStyle}
+                              type="light"
+                              onClick={handleGoogleSignIn}/>
+                            <Link href="/" variant="body2" underline="none">
+                                {"Back to home"}
+                            </Link>
+                        </Box>
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
@@ -122,4 +140,3 @@ export default function SignIn() {
         </ThemeProvider>
     );
 }
-

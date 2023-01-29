@@ -14,6 +14,8 @@ import SignUp from "./components/Auth/SignUp";
 import {onAuthStateChanged} from 'firebase/auth';
 import Protected from "./components/Auth/Protected";
 import UserProfile from "./components/profile/UserProfile";
+import {AuthContextProvider} from "./components/Auth/AuthContext";
+import ResetPassword from "./components/Auth/ResetPassword";
 
 function App() {
 
@@ -78,31 +80,34 @@ function App() {
     }, [])
 
 
-    return (<div className="App">
-        <Routes>
-            <Route path='/login' element={<SignIn/>}/>
-            <Route path='/signup' element={<SignUp/>}/>
-            <Route path='/' element={<Layout
-                projects={projects}
-                boards={boards}
-                statuses={statuses}
-                tickets={tickets}
-                authUser={authUser}
-            />}>
-                <Route index element={<Home/>}/>
-                <Route path='/dashboard' element={<Protected user={authUser}><Dashboard/></Protected>}/>
-                <Route path='projects/:projectId' element={<Protected user={authUser}><Project
-                    projects={projects}
-                    boards={boards}
-                /></Protected>}/>
-                <Route path='boards/:boardId' element={<Protected user={authUser}><Board 
-                boards={boards} 
-                setTickets={setTickets}
-                tickets={tickets} 
-                statuses={statuses}/></Protected>}/>
-            </Route>
-            <Route path='/user' element={<UserProfile/>}/>
-        </Routes>
+  return (<div className="App">
+    <AuthContextProvider>
+      <Routes>
+        <Route path='/login' element={<SignIn/>}/>
+        <Route path='/signup' element={<SignUp/>}/>
+        <Route path='/' element={<Layout
+          projects={projects}
+          boards={boards}
+          statuses={statuses}
+          tickets={tickets}
+          authUser={authUser}
+        />}>
+          <Route index element={<Home/>}/>
+          <Route path='/dashboard' element={<Protected user={authUser}><Dashboard/></Protected>}/>
+          <Route path='projects/:projectId' element={<Protected user={authUser}><Project
+            projects={projects}
+            boards={boards}
+          /></Protected>}/>
+          <Route path='boards/:boardId' element={<Protected user={authUser}><Board
+            boards={boards}
+            setTickets={setTickets}
+            tickets={tickets}
+            statuses={statuses}/></Protected>}/>
+        </Route>
+        <Route path='/user' element={<UserProfile/>}/>
+        <Route path='/reset-password' element={<ResetPassword/>}/>
+      </Routes>
+    </AuthContextProvider>
     </div>);
 }
 

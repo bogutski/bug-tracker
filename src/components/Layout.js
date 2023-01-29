@@ -6,8 +6,8 @@ import CreateTicket from "./CreateTicket";
 import PersonDropDown from "./PersonDropDown";
 
 const Layout = (props) => {
-
     const {projects, boards, statuses, authUser} = props;
+
     return (
         <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
