@@ -1,85 +1,125 @@
-import React, {useState} from 'react';
+// import React, {useState} from 'react';
 import {auth} from "../../dbConnection";
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useNavigate} from "react-router-dom";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {useState} from "react";
 
-const SignIn = () => {
+function Copyright(props) {
+    return (
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+            {'Copyright © '}
+            <Link color="inherit" href="/">
+                Bug-Tracker
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
+
+const theme = createTheme();
+
+export default function SignIn() {
+
 
     const nav = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
-
-    function logIn(e) {
-        e.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
             .then(userCredential => {
                 console.log(userCredential);
-                nav('/dashboard');
+                nav('/dashboard')
             })
             .catch(err => {
                 console.log(err);
             })
-    }
+    };
 
     return (
-        <div className="container">
-            <div className="d-flex justify-content-center h-100">
-                <div className="card">
-                    <div className="card-header">
-                        <h3>Sign In</h3>
-                    </div>
-                    <div className="card-body">
-                        <form>
-                            <div className="input-group form-group">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text"><i className="fas fa-user"></i></span>
-                                </div>
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    placeholder="email"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                />
-
-                            </div>
-                            <div className="input-group form-group">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text"><i className="fas fa-key"></i></span>
-                                </div>
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    placeholder="password"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <input
-                                    type="submit"
-                                    value="Login"
-                                    className="btn float-right login_btn"
-                                    onClick={logIn}
-                                />
-                            </div>
-                        </form>
-                    </div>
-                    <div className="card-footer">
-                        <div className="d-flex justify-content-center links">
-                            Don't have an account? <a className="ms-2" href="/signup">Sign Up</a>
-                        </div>
-                        <div className="d-flex justify-content-center">
-                            <a href="#"> Forgot your password? </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary" />}
+                            label="Remember me"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign In
+                        </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="#" variant="body2">
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link href="/signup" variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
+                <Copyright sx={{ mt: 8, mb: 4 }} />
+            </Container>
+        </ThemeProvider>
     );
-};
+}
 
-export default SignIn;
