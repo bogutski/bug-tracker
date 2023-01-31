@@ -8,20 +8,18 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
-
-// const resetPasswordSent = () => {
-//   const auth = getAuth();
-//   sendPasswordResetEmail(auth, email)
-// 	.then(() => {
-// 	  console.log('Password reset email sent!')
-// 	})
-// 	.catch((error) => {
-// 	  console.log(error)
-// 	});
-// }
+import {UserAuth} from './AuthContext'
 
 const theme = createTheme();
+
 const ResetPassword = () => {
+	const { resetPassword } = UserAuth();
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		const email = data.get("email");
+		if(email) resetPassword(email);
+	}
   return (
 	<ThemeProvider theme={theme}>
 	  <Container component="main" maxWidth="xs">
@@ -37,7 +35,10 @@ const ResetPassword = () => {
 		  <Typography component="h1" variant="h5">
 			Reset password
 		  </Typography>
-		  <Box component="form"  noValidate>
+		  <Box component="form"
+					 noValidate
+					 onSubmit={handleSubmit}
+			>
 			<TextField
 			  margin="normal"
 			  required
@@ -47,16 +48,6 @@ const ResetPassword = () => {
 			  name="email"
 			  autoComplete="email"
 			  autoFocus
-			/>
-			<TextField
-			  margin="normal"
-			  required
-			  fullWidth
-			  name="password"
-			  label="Password"
-			  type="password"
-			  id="password"
-			  autoComplete="current-password"
 			/>
 			<Button
 			  type="submit"
