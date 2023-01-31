@@ -128,10 +128,14 @@ export default function SignIn() {
                             <GoogleButton
                               style={googleBtnStyle}
                               type="light"
-                              onClick={handleGoogleSignIn}/>
-                            <Link href="/" variant="body2" underline="none">
-                                {"Back to home"}
-                            </Link>
+                              onClick={handleGoogleSignIn} />
+                            <Grid container>
+                                <Grid item sx={{ mt: 3 }} xs>
+                                    <Link href="/" variant="body2" underline="none" sx={{ mt: 3 }}>
+                                        {"Back to home"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Box>
                 </Box>

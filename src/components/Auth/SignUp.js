@@ -107,6 +107,13 @@ export default function SignUp() {
                                     {"Already have an account? Sign in"}
                                 </Link>
                             </Grid>
+                            <Grid container>
+                            <Grid item sx={{ mt: 5}} xs>
+                                <Link href="/" variant="body2" underline="none">
+                                    {"Back to home"}
+                                </Link>
+                            </Grid>
+                            </Grid>
                         </Grid>
                     </Box>
                 </Box>
