@@ -7,10 +7,10 @@ import db from "../../dbConnection";
 import Kanban from "./Kanban";
 
 const Board = (props) => {
-  const {boards, boardName, tickets, statuses, setTickets} = props;
+  const {boards, projects, boardName, tickets, statuses, setTickets} = props;
   const params = useParams();
   const boardId = params.boardId;
-  const currentBoard = boards?.find(board => board.id === params.boardId);
+  const currentBoard = boards?.find(board => board.id === boardId);
   const ticketsCurrentBoard = tickets?.filter(ticket => ticket.boardId === boardId) || [];
 
   const currentBoardName = currentBoard?.boardName;
@@ -46,7 +46,13 @@ const Board = (props) => {
             >
                 Update
             </button>
-            <Kanban statuses={statuses} tickets={ticketsCurrentBoard} setTickets={setTickets} />
+            <Kanban
+                board={currentBoard}
+                boards={boards}
+                projects={projects}
+                statuses={statuses}
+                tickets={ticketsCurrentBoard}
+                setTickets={setTickets} />
             <BoardList  boardId={boardId}/>
         </div>
     );

@@ -8,7 +8,7 @@ const BoardList = (props) => {
         <div className="dropdown-menu">
             {!projectId ?
                 boards?.map(board => <BoardItem key={board.id}
-                                                board={board}/>) : boards?.filter(board => board.projectId === projectId).map(board =>
+                                                board={board}/>) : boards?.filter(board => board.projectId === projectId)?.map(board =>
                     <BoardItem key={board.id} board={board}/>)}
             {projectId && <div>
                 <div className="dropdown-divider"></div>

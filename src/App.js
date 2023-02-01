@@ -135,6 +135,7 @@ function App() {
                     setTickets={setTickets}
                     tickets={tickets}
                     statuses={statuses}
+                    projects={projects}
                   />
                 </Protected>
               }

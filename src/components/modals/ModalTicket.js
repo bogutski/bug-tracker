@@ -6,6 +6,7 @@ const ModalTicket = (props) => {
         onClose,
         modal,
         statuses, projects, boards,
+        ticket,
         onActionTicket,
         modalTitle, actionName
     } = props;
@@ -24,17 +25,31 @@ const ModalTicket = (props) => {
     const [description, setDescription] = useState('');
     const [isDirty, setIsDirty] = useState(false); // first form render - don't show errors
     const [isValid, setValid] = useState(false);
+    const [projectChanged, setProjectChanged] = useState(false); // when update a project need to know for changing boards
 
     // back to initial state when open/close the form
     useEffect(() => {
-        setCurrentBoards([]);
-        setProject('');
-        setBoard('');
-        setTitle('');
-        setDescription('');
-        setStatus('');
-        setIsDirty(false);
-        setValid(false);
+            if (actionName === 'Update' && ticket) {
+                setCurrentBoards(getBoards(ticket?.projectId));
+                setProject(ticket?.projectId);
+                setBoard(ticket?.boardId);
+                setTitle(ticket?.title);
+                setDescription(ticket?.description || '');
+                setStatus(ticket?.status);
+                setIsDirty(false);
+                setValid(true);
+                setProjectChanged(false);
+            }
+            if (actionName === 'Create') {
+                setCurrentBoards([]);
+                setProject('');
+                setBoard('');
+                setTitle('');
+                setDescription('');
+                setStatus('');
+                setIsDirty(false);
+                setValid(false);
+            }
     }, [modal]);
 
     useEffect(() => {
@@ -45,12 +60,12 @@ const ModalTicket = (props) => {
             } else {
                 setCurrentBoards([]);
             }
-            setBoard('');
+            setBoard((actionName === 'Update') ? ticket?.boardId : '');
         }
     }, [getBoards, project]);
 
     useEffect(() => {
-        setValid(!isDirty || (title && status && project && board && currentBoards.length));
+        setValid(isDirty && (title && status && project && (board && !projectChanged) && currentBoards.length));
     }, [title, project, board, status, isDirty, currentBoards.length])
 
     return ( <>
@@ -87,22 +102,23 @@ const ModalTicket = (props) => {
                             value={project}
                             required
                             onChange={(e) => {
+                                // projectChanged=true indicates to show "Choose a board" option
+                                if (actionName === 'Update') setProjectChanged(true);
                                 setIsDirty(true);
                                 setProject(e.target.value);
                                 onChange(e);
                             }}
                         >
-                           { !project &&
+                           { !project && (actionName === 'Create') &&
                                <option key={'defaultProjectKey'} value={''}>
                                    {'Select a project...'}
                                </option>
                             }
-                            {projects.map((project) => (
-                                project.projectName &&
+                            {projects?.map((project) => (project.projectName &&
                                 <option key={project.id} value={project.id}>
                                     {project.projectName}
-                                </option>
-                            ))}
+                                </option>)
+                            )}
                         </select>
                     </div>
                 </div>
@@ -116,21 +132,24 @@ const ModalTicket = (props) => {
                     <div className="col-sm-10">
                         <select
                             id="inputBoard"
-                            className={`form-control ${!board && isDirty && 'is-invalid' } `}
+                            className={`form-control ${(!board || (board && projectChanged)) && isDirty && 'is-invalid' } `}
                             name="boardId"
                             required
-                            value={board ? board : 'Select a board...'}
+                            value={board}
                             onChange={(e) => {
                                 setIsDirty(true);
                                 setBoard(e.target.value);
+                                setProjectChanged(false);
                                 onChange(e);
                             }}
                             disabled={!currentBoards?.length}
                         >
                             {project && !currentBoards?.length && <option>No boards for the project...</option>}
+                            {project && (actionName === 'Create' || projectChanged) && currentBoards?.length &&
                             <option key={'defaultBoardKey'} value={''}>
                                 {'Select a board...'}
-                            </option>
+                            </option>}
+
                             {project && currentBoards?.length &&
                                 currentBoards.map((board) => (
                                 <option key={board.id} value={board.id}>
@@ -176,14 +195,14 @@ const ModalTicket = (props) => {
                             className={`form-control ${!status && isDirty && 'is-invalid' } `}
                             name="status"
                             required
-                            value={status}
+                            value={status ? status : 'Select a status...'}
                             onChange={(e) => {
                                 setIsDirty(true);
                                 setStatus(e.target.value)
                                 onChange(e);
                             }}
                         >
-                            {!status && <option key={'defaultStatusKey'} value={''}>
+                            {!status && (actionName === 'Create') && <option key={'defaultStatusKey'} value={''}>
                                 {'Select a status...'}
                             </option>}
                             {statuses.map((status) => (
