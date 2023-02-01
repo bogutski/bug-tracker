@@ -25,11 +25,11 @@ const ModalTicket = (props) => {
     const [description, setDescription] = useState('');
     const [isDirty, setIsDirty] = useState(false); // first form render - don't show errors
     const [isValid, setValid] = useState(false);
-    const [projectChanged, setProjectChanged] = useState(false); // when update a project need to know for changing boards
+    const [projectChanged, setProjectChanged] = useState(false); // flag indicates if project is changed
 
-    // back to initial state when open/close the form
+    // set initial values for update form
     useEffect(() => {
-            if (actionName === 'Update' && ticket) {
+            if (actionName === 'Update' && modal && !isDirty) {
                 setCurrentBoards(getBoards(ticket?.projectId));
                 setProject(ticket?.projectId);
                 setBoard(ticket?.boardId);
@@ -40,7 +40,12 @@ const ModalTicket = (props) => {
                 setValid(true);
                 setProjectChanged(false);
             }
-            if (actionName === 'Create') {
+    }, [modal, actionName, getBoards, ticket, isDirty]);
+
+    // reset form
+    useEffect(() => {
+        return () => {
+            if (!modal) {
                 setCurrentBoards([]);
                 setProject('');
                 setBoard('');
@@ -49,7 +54,9 @@ const ModalTicket = (props) => {
                 setStatus('');
                 setIsDirty(false);
                 setValid(false);
+                setProjectChanged(false);
             }
+        }
     }, [modal]);
 
     useEffect(() => {
@@ -62,11 +69,11 @@ const ModalTicket = (props) => {
             }
             setBoard((actionName === 'Update') ? ticket?.boardId : '');
         }
-    }, [getBoards, project]);
+    }, [getBoards, project, actionName, ticket?.boardId]);
 
     useEffect(() => {
         setValid(isDirty && (title && status && project && (board && !projectChanged) && currentBoards.length));
-    }, [title, project, board, status, isDirty, currentBoards.length])
+    }, [title, project, board, status, isDirty, currentBoards.length, projectChanged])
 
     return ( <>
         <div className="modal-dialog" role="document">
