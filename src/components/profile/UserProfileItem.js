@@ -6,7 +6,7 @@ const UserProfileItem = () => {
     return (
         <div>
             <li className="nav-item">
-                <a className="nav-link active" href="/user">Profile</a>
+                <a className="nav-link active" href="/profile">Profile</a>
             </li>
         </div>
     );

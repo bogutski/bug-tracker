@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+body{
+  background: -webkit-linear-gradient(left, #F7EFE5, white);
+}
+
+.navbar {
+  background: -webkit-linear-gradient(left, #F7EFE5, white);
+}
