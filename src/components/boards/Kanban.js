@@ -1,7 +1,7 @@
 import Ticket from "../Ticket";
 
 const Kanban = (props) => {
-  const {statuses, tickets, setTickets} = props;
+  const {statuses, projects, boards, tickets, setTickets, board} = props;
 
   const sortedStatuses = statuses.sort((a, b) => a.statusNumber - b.statusNumber)
 
@@ -31,6 +31,10 @@ const Kanban = (props) => {
                   ticket={item}
                   status={status}
                   moveTicket={moveTicket}
+                  board={board}
+                  projects={projects}
+                  boards={boards}
+                  statuses={statuses}
                 />
               )}
             </div>
