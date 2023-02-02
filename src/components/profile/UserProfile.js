@@ -18,7 +18,7 @@ const UserProfile = () => {
   const user = auth.currentUser;
 
   const uploadPhoto = async (file, user) => {
-    const fileRef = ref(storage, user.uid + ".jpeg");
+    const fileRef = ref(storage, user.uid);
     const newPhoto = await uploadBytes(fileRef, file);
     const newPhotoURL = await getDownloadURL(fileRef);
     updateProfile(user, { photoURL: newPhotoURL })
@@ -32,9 +32,9 @@ const UserProfile = () => {
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
-      setPhoto(e.target.files[0]);
+      setPhotoURL(e.target.files[0]);
     }
-    uploadPhoto(photo, user);
+    uploadPhoto(photoURL, user);
   };
   const toggle = () => setModal(!modal);
 
