@@ -41,8 +41,6 @@ function Copyright(props) {
 const theme = createTheme();
 export default function SignIn() {
   const { googleSignIn, logIn } = UserAuth();
-  // const emailRef = useRef();
-  // const passwordRef = useRef();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
