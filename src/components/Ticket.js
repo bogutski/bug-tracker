@@ -1,7 +1,9 @@
+import UpdateTicket from "./UpdateTicket";
 
 const Ticket = (props) => {
-  const {ticket, status, moveTicket} = props;
-
+  const {ticket, status, moveTicket, projects, boards, statuses} = props;
+  const currentProject = projects?.find(project => project.id === ticket.projectId) || '';
+  const currentBoard = boards?.find(board => board.id === ticket.boardId) || '';
 
   return (
     <div className="card">
@@ -17,7 +19,7 @@ const Ticket = (props) => {
             </p>
           </li>
           <li className="list-group-item">
-            <h6 className="card-title">Project Name: **** </h6>
+            <h6 className="card-title">{currentProject?.projectName}</h6>
           </li>
           <li className="list-group-item">
             <h6 className="card-text">Status: {ticket.status}</h6>
@@ -35,6 +37,8 @@ const Ticket = (props) => {
             </button>
           </li>
         </ul>
+        <UpdateTicket ticket={ticket} currentBoard={currentBoard}
+                      projects={projects} boards={boards} statuses={statuses} />
       </div>
     </div>
   );
