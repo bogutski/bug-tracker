@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./profile.css";
-import { getAuth, updateProfile } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 import { storage } from "../../dbConnection";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import {UserAuth} from '../Auth/AuthContext'
 
 const UserProfile = () => {
-  const [photo, setPhoto] = useState(null);
-  const [photoURL, setPhotoURL] = useState(
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-4j0Oe5cma88GR-7QnLGS1IHpvKZiKuWy8g&usqp=CAU"
-  );
+  const { user } = UserAuth();
+  const [photoURL, setPhotoURL] = useState( "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-4j0Oe5cma88GR-7QnLGS1IHpvKZiKuWy8g&usqp=CAU");
   const [userFirstName, setUserFirstName] = useState("Vasiya");
   const [userLastName, setUserLastName] = useState("Pupkin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("*******");
-  const [modal, setModal] = useState(false);
-  const auth = getAuth();
-  const user = auth.currentUser;
 
   const uploadPhoto = (file, user) => {
     const fileRef = ref(storage, user.uid);
@@ -31,7 +27,6 @@ const UserProfile = () => {
       })
     });
   };
-
   const handleChange = async (e) => {
     e.preventDefault();
     if (e.target.files[0]) {
@@ -39,14 +34,12 @@ const UserProfile = () => {
       await uploadPhoto(file, user);
     }
   };
-  const toggle = () => setModal(!modal);
 
   useEffect(() => {
     if (user?.photoURL) {
-      console.log(user.photoURL)
-      setPhotoURL(user.photoURL);
+      console.log(user.photoURL);
+      setPhotoURL(user.photoURL)
     }
-    if (user !== null) {
       if (user?.email) {
         setEmail(user.email);
       }
@@ -54,7 +47,6 @@ const UserProfile = () => {
         setEmail(user.displayName);
         console.log(user.displayName);
       }
-    }
   }, [user]);
 
   return (

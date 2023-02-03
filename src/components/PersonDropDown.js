@@ -9,7 +9,6 @@ import {useNavigate} from "react-router-dom";
 import {auth} from "../dbConnection";
 import {signOut} from 'firebase/auth';
 import UserProfileItem from "./profile/UserProfileItem";
-import EditUserProfile from "./profile/EditUserProfile";
 
 
 const style= {
@@ -47,7 +46,6 @@ function PersonDropDown({direction, authUser, ...args}) {
                     </>}
                     <DropdownItem onClick={authButtonHandler}>{authUser.email ? 'Sign out' : 'Log in'}</DropdownItem>
                 </DropdownMenu>
-                <EditUserProfile/>
             </Dropdown>
         </>
     );
