@@ -6,7 +6,7 @@ import Board from "./components/boards/Board";
 import Project from "./components/projects/Project";
 import { useEffect, useState } from "react";
 import { query, collection, onSnapshot, getDocs } from "firebase/firestore";
-import db, {auth} from "./dbConnection";
+import db, { auth } from "./dbConnection";
 import "bootstrap/dist/css/bootstrap.css";
 import Home from "./components/Home";
 import SignIn from "./components/Auth/SignIn";
@@ -110,6 +110,7 @@ function App() {
             }
           >
             <Route index element={<Home />} />
+            <Route path="/profile" element={<UserProfile />} />
             <Route
               path="/dashboard"
               element={
@@ -141,7 +142,6 @@ function App() {
               }
             />
           </Route>
-          <Route path="/user" element={<UserProfile />} />
           <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </AuthContextProvider>
