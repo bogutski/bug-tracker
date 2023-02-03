@@ -5,10 +5,10 @@ import { storage } from "../../dbConnection";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const UserProfile = () => {
+  const [photo, setPhoto] = useState(null);
   const [photoURL, setPhotoURL] = useState(
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-4j0Oe5cma88GR-7QnLGS1IHpvKZiKuWy8g&usqp=CAU"
   );
-  const [photo, setPhoto] = useState(null);
   const [userFirstName, setUserFirstName] = useState("Vasiya");
   const [userLastName, setUserLastName] = useState("Pupkin");
   const [email, setEmail] = useState("");
@@ -17,29 +17,32 @@ const UserProfile = () => {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  const uploadPhoto = async (file, user) => {
+  const uploadPhoto = (file, user) => {
     const fileRef = ref(storage, user.uid);
-    const newPhoto = await uploadBytes(fileRef, file);
-    const newPhotoURL = await getDownloadURL(fileRef);
-    updateProfile(user, { photoURL: newPhotoURL })
-      .then(() => {
-        alert("New Photo is uploaded");
-      })
-      .catch((err) => {
-        alert("Wrong photo's format!");
+    uploadBytes(fileRef, file).then((snapshot) => {
+      getDownloadURL(fileRef).then((newPhotoURL) => {
+        updateProfile(user, { photoURL: newPhotoURL })
+          .then(() => {
+            alert("New Photo is uploaded");
+          })
+          .catch((err) => {
+            alert("Wrong photo's format!");
+          });
       });
+    });
   };
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
-      setPhotoURL(e.target.files[0]);
+      setPhoto(e.target.files[0]);
     }
-    uploadPhoto(photoURL, user);
+    uploadPhoto(photo, user);
   };
   const toggle = () => setModal(!modal);
 
   useEffect(() => {
     if (user?.photoURL) {
+      console.log(user.photoURL)
       setPhotoURL(user.photoURL);
     }
     if (user !== null) {
@@ -59,11 +62,18 @@ const UserProfile = () => {
         <div className="row">
           <div className="col-md-4">
             <div className="profile-img">
-              <img src={photoURL} alt="avatar" />
-              <div className="file btn btn-lg btn-primary">
-                Change Photo
-                <input type="file" name="file" onChange={handleChange} />
+              {/*<img src={photoURL} alt="avatar" />*/}
+              <div className="text-center">
+                <img src={photoURL}
+                     className="avatar img-circle img-thumbnail"
+                     alt="avatar"/>
+                  <h6>Upload a different photo...</h6>
+                  <input type="file" className="text-center center-block file-upload" onChange={handleChange}/>
               </div>
+              {/*<div className="file btn btn-lg btn-primary">*/}
+              {/*  Change Photo*/}
+              {/*  <input type="file" name="file" onChange={handleChange} />*/}
+              {/*</div>*/}
             </div>
           </div>
           <div className="col-md-6">
