@@ -19,24 +19,25 @@ const UserProfile = () => {
 
   const uploadPhoto = (file, user) => {
     const fileRef = ref(storage, user.uid);
-    uploadBytes(fileRef, file).then((snapshot) => {
-      getDownloadURL(fileRef).then((newPhotoURL) => {
-        updateProfile(user, { photoURL: newPhotoURL })
+    uploadBytes(fileRef, file).then((snaphot) => {
+      getDownloadURL(snaphot.ref).then(url => {
+        updateProfile(user, { photoURL: url })
           .then(() => {
             alert("New Photo is uploaded");
           })
           .catch((err) => {
             alert("Wrong photo's format!");
           });
-      });
+      })
     });
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
+    e.preventDefault();
     if (e.target.files[0]) {
-      setPhoto(e.target.files[0]);
+      const file = e.target.files[0];
+      await uploadPhoto(file, user);
     }
-    uploadPhoto(photo, user);
   };
   const toggle = () => setModal(!modal);
 
@@ -62,18 +63,19 @@ const UserProfile = () => {
         <div className="row">
           <div className="col-md-4">
             <div className="profile-img">
-              {/*<img src={photoURL} alt="avatar" />*/}
               <div className="text-center">
                 <img src={photoURL}
-                     className="avatar img-circle img-thumbnail"
+                     className="rounded-circle"
                      alt="avatar"/>
-                  <h6>Upload a different photo...</h6>
-                  <input type="file" className="text-center center-block file-upload" onChange={handleChange}/>
+                <h6>Upload a different photo...</h6>
+                <div className="btn btn-secondary btn-rounded">
+                  <label className="form-label text-white m-0"
+                         htmlFor="customFile">Choose file</label>
+                  <input type="file"
+                         className="form-control d-none" id="customFile"
+                         onChange={handleChange} />
+                </div>
               </div>
-              {/*<div className="file btn btn-lg btn-primary">*/}
-              {/*  Change Photo*/}
-              {/*  <input type="file" name="file" onChange={handleChange} />*/}
-              {/*</div>*/}
             </div>
           </div>
           <div className="col-md-6">
