@@ -97,11 +97,11 @@ const ModalTicket = (props) => {
                 <div className="form-group row">
                     <label
                         htmlFor="inputProject"
-                        className="col-sm-2 col-form-label"
+                        className="col-sm-3 col-form-label"
                     >
                         Project:
                     </label>
-                    <div className="col-sm-10">
+                    <div className="col-sm-9">
                         <select
                             id="inputProject"
                             className={`form-control ${!project && isDirty && 'is-invalid' } `}
@@ -132,11 +132,11 @@ const ModalTicket = (props) => {
                 <div className="form-group row">
                     <label
                         htmlFor="inputBoard"
-                        className="col-sm-2 col-form-label"
+                        className="col-sm-3 col-form-label"
                     >
                         Board:
                     </label>
-                    <div className="col-sm-10">
+                    <div className="col-sm-9">
                         <select
                             id="inputBoard"
                             className={`form-control ${(!board || (board && projectChanged)) && isDirty && 'is-invalid' } `}
@@ -169,11 +169,11 @@ const ModalTicket = (props) => {
                 <div className="form-group row">
                     <label
                         htmlFor="inputTitle"
-                        className="col-sm-2 col-form-label"
+                        className="col-sm-3 col-form-label"
                     >
                         Title:
                     </label>
-                    <div className="col-sm-10">
+                    <div className="col-sm-9">
                         <input
                             type="text"
                             className={`form-control ${!title && isDirty && 'is-invalid' } `}
@@ -192,11 +192,11 @@ const ModalTicket = (props) => {
                 <div className="form-group row">
                     <label
                         htmlFor="inputStatus"
-                        className="col-sm-2 col-form-label"
+                        className="col-sm-3 col-form-label"
                     >
                         Status:
                     </label>
-                    <div className="col-sm-10">
+                    <div className="col-sm-9">
                         <select
                             id="inputStatus"
                             className={`form-control ${!status && isDirty && 'is-invalid' } `}
