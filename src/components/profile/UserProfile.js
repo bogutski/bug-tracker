@@ -28,7 +28,6 @@ const UserProfile = () => {
     });
   };
   const handleChange = async (e) => {
-    e.preventDefault();
     if (e.target.files[0]) {
       const file = e.target.files[0];
       await uploadPhoto(file, user);
@@ -60,12 +59,22 @@ const UserProfile = () => {
                      className="rounded-circle"
                      alt="avatar"/>
                 <h6>Upload a different photo...</h6>
-                <div className="btn btn-secondary btn-rounded">
+                <div className="d-flex justify-content-around">
+                <div className="btn btn-secondary btn-rounded btn-sm">
                   <label className="form-label text-white m-0"
                          htmlFor="customFile">Choose file</label>
                   <input type="file"
                          className="form-control d-none" id="customFile"
                          onChange={handleChange} />
+                </div>
+                  <div>
+                  <input
+                    type="submit"
+                    className="btn btn-outline-secondary btn-rounded btn-sm"
+                    name="btnAddMore"
+                    value="Preview"
+                  />
+                  </div>
                 </div>
               </div>
             </div>
