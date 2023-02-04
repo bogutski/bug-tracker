@@ -72,7 +72,7 @@ const UserProfile = () => {
                     type="submit"
                     className="btn btn-outline-secondary btn-rounded btn-sm"
                     name="btnAddMore"
-                    value="Preview"
+                    value="Upload"
                   />
                   </div>
                 </div>
