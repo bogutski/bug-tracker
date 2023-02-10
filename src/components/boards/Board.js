@@ -7,7 +7,7 @@ import db from "../../dbConnection";
 import Kanban from "./Kanban";
 
 const Board = (props) => {
-  const {boards, projects, boardName, tickets, statuses, setTickets} = props;
+  const {boards, projects, boardName, tickets, statuses, onUpdateTicket, moveTicket} = props;
   const params = useParams();
   const boardId = params.boardId;
   const currentBoard = boards?.find(board => board.id === boardId);
@@ -23,7 +23,6 @@ const Board = (props) => {
             .then(r => console.log(r))
             .catch(err => console.log(err));
     }
-
 
     return (
         <div>
@@ -52,7 +51,8 @@ const Board = (props) => {
                 projects={projects}
                 statuses={statuses}
                 tickets={ticketsCurrentBoard}
-                setTickets={setTickets} />
+                onUpdateTicket={onUpdateTicket}
+                moveTicket={moveTicket} />
             <BoardList  boardId={boardId}/>
         </div>
     );

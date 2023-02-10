@@ -1,27 +1,14 @@
 import Ticket from "../Ticket";
 
 const Kanban = (props) => {
-  const {statuses, projects, boards, tickets, setTickets, board} = props;
-
-  const sortedStatuses = statuses.sort((a, b) => a.statusNumber - b.statusNumber)
-
-
-  const moveTicket = (statusId, dir, ticketId) => {
-    const currentStatus= +statuses.find(el=>el.id===statusId).statusNumber+dir;
-    const nextStatus = statuses.find(el=>+el.statusNumber===currentStatus).statusName
-    const newTicket =  tickets.map(el=>el.id===ticketId? {...el, status:nextStatus} : el)
-    setTickets(newTicket)
-
-  }
-
-  const ticketsByStatus = (s) => tickets.filter(item => item.status === s);
-
+  const {statuses, projects, boards, tickets, board, onUpdateTicket, moveTicket} = props;
+  const ticketsByStatus = (status) => tickets.filter(item => item.status === status);
 
   return (
     <div className="container">
       <div className="row">
 
-        {sortedStatuses.map((status) => {
+        {statuses.map((status) => {
           return (
             <div className="col-sm" key={status.statusNumber}>
               {status.statusName}
@@ -35,6 +22,8 @@ const Kanban = (props) => {
                   projects={projects}
                   boards={boards}
                   statuses={statuses}
+                  tickets={tickets}
+                  onUpdateTicket={onUpdateTicket}
                 />
               )}
             </div>
