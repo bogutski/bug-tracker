@@ -1,10 +1,8 @@
 import React, {useState} from "react";
 import ModalTicket from "./modals/ModalTicket";
-import {doc, updateDoc} from "firebase/firestore";
-import db from "../dbConnection";
 
 const UpdateTicket = (props) => {
-  const { ticket, currentBoard, projects, boards, statuses } = props;
+  const { ticket, currentBoard, projects, boards, statuses, onUpdateTicket } = props;
   const initData = { ...ticket }
 
   const [modal, setModal] = useState(false);
@@ -12,19 +10,13 @@ const UpdateTicket = (props) => {
 
   const [formData, setFormData] = useState();
 
-  const onUpdateTicket = () => {
-      updateDoc(doc(db, 'Tickets', ticket.id), {...formData})
-          .then(r => console.log(r))
-          .catch(err => console.log(err));
+  const onChange = e => {
+      setFormData({
+          ...initData,
+          ...formData,
+          [e.target.name]: e.target.value}
+      );
   };
-
-    const onChange = e => {
-        setFormData({
-            ...initData,
-            ...formData,
-            [e.target.name]: e.target.value}
-        );
-    };
 
   return (
     <div>
@@ -54,7 +46,7 @@ const UpdateTicket = (props) => {
                        statuses={statuses}
                        ticket={formData}
                        currentBoard={currentBoard}
-                       onActionTicket={onUpdateTicket}
+                       onActionTicket={() => onUpdateTicket(ticket.id, formData)}
                        onClose={toggle}
                        modal={modal}
                        modalTitle='Update Ticket'

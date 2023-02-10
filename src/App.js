@@ -5,7 +5,7 @@ import Dashboard from "./components/Dashboard";
 import Board from "./components/boards/Board";
 import Project from "./components/projects/Project";
 import { useEffect, useState } from "react";
-import { query, collection, onSnapshot, getDocs } from "firebase/firestore";
+import { query, collection, onSnapshot, getDocs, doc, updateDoc } from "firebase/firestore";
 import db, { auth } from "./dbConnection";
 import "bootstrap/dist/css/bootstrap.css";
 import Home from "./components/Home";
@@ -71,6 +71,27 @@ function App() {
     });
   };
 
+  const onUpdateTicket = (ticketId, newTicket) => {
+    console.log('onUpdateTicket newTicket: ', newTicket);
+    updateDoc(doc(db, 'Tickets', ticketId), {...newTicket})
+        .then(r => {
+          console.log(r);
+          const newTickets = tickets.map((ticket) => ticket.id === newTicket.id ? newTicket : ticket)
+          setTickets(newTickets);
+        })
+        .catch(err => console.log(err));
+};
+
+const sortedStatuses = statuses.sort((a, b) => a.statusNumber - b.statusNumber)
+
+const moveTicket = (statusId, dir, ticketId) => {
+  const currentStatus = +statuses.find(el => el.id === statusId).statusNumber + dir;
+  const nextStatus = statuses.find(el => +el.statusNumber === currentStatus).statusName;
+  const ticketToMove = tickets.find(el => el.id === ticketId);
+  const newTicket = ticketToMove && {...ticketToMove, status: nextStatus};
+  if (newTicket) onUpdateTicket(ticketId, newTicket);
+}
+
   useEffect(() => {
     getProjects();
     getBoards();
@@ -133,10 +154,11 @@ function App() {
                 <Protected user={authUser}>
                   <Board
                     boards={boards}
-                    setTickets={setTickets}
                     tickets={tickets}
-                    statuses={statuses}
+                    statuses={sortedStatuses}
                     projects={projects}
+                    onUpdateTicket={onUpdateTicket}
+                    moveTicket={moveTicket}
                   />
                 </Protected>
               }

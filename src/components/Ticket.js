@@ -1,7 +1,7 @@
 import UpdateTicket from "./UpdateTicket";
 
 const Ticket = (props) => {
-  const {ticket, status, moveTicket, projects, boards, statuses} = props;
+  const {ticket, status, moveTicket, projects, boards, statuses, onUpdateTicket} = props;
   const currentProject = projects?.find(project => project.id === ticket.projectId) || '';
   const currentBoard = boards?.find(board => board.id === ticket.boardId) || '';
 
@@ -26,19 +26,20 @@ const Ticket = (props) => {
             <button type="button"
                     className="btn btn-light"
                     disabled={ticket.status === 'To Do'}
-                    onClick={()=>moveTicket(status.id, -1, ticket.id )}
+                    onClick={()=>moveTicket(status.id, -1, ticket.id)}
             >←
             </button>
             <button type="button"
                     className="btn btn-light"
                     disabled={ticket.status === 'Done'}
-                    onClick={()=>moveTicket(status.id, 1, ticket.id) }
+                    onClick={()=>moveTicket(status.id, 1, ticket.id)}
             >→
             </button>
           </li>
         </ul>
         <UpdateTicket ticket={ticket} currentBoard={currentBoard}
-                      projects={projects} boards={boards} statuses={statuses} />
+          projects={projects} boards={boards} statuses={statuses}
+          onUpdateTicket={onUpdateTicket} />
       </div>
     </div>
   );
